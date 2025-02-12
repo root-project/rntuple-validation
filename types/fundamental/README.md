@@ -6,7 +6,7 @@
 
 __Covered under a different category:__
  * `[Split]Index{32,64}`: with [`std::string`](../string) and [`std::vector`](../vector)
- * `Switch`
+ * `Switch`: with [`std::variant`](../variant)
 
 __Missing:__
  * `Real32Trunc`
