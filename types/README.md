@@ -6,3 +6,4 @@
  * [`vector`](vector): `std::vector` with all `[Split]Index{32,64}` column types
  * [`set`](set): `std::set` with all `[Split]Index{32,64}` column types
  * [`multiset`](multiset): `std::multiset` with all `[Split]Index{32,64}` column types
+ * [`unordered_set`](unordered_set): `std::unordered_set` with all `[Split]Index{32,64}` column types
