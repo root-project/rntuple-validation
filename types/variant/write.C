@@ -2,8 +2,8 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
+using ROOT::RNTupleWriteOptions;
 using ROOT::Experimental::RNTupleModel;
-using ROOT::Experimental::RNTupleWriteOptions;
 using ROOT::Experimental::RNTupleWriter;
 
 #include <cstdint>

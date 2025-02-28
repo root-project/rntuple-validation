@@ -5,9 +5,9 @@
 #include <ROOT/RNTupleWriter.hxx>
 
 using ROOT::ENTupleColumnType;
+using ROOT::RNTupleWriteOptions;
 using ROOT::Experimental::RField;
 using ROOT::Experimental::RNTupleModel;
-using ROOT::Experimental::RNTupleWriteOptions;
 using ROOT::Experimental::RNTupleWriter;
 
 #include <limits>
