@@ -1,2 +1,6 @@
 *.json
 *.root
+
+# Ignore files related to dictionary generation
+*.pcm
+Nested*.cxx
