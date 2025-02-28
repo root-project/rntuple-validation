@@ -4,7 +4,7 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::Experimental::EColumnType;
+using ROOT::ENTupleColumnType;
 using ROOT::Experimental::RField;
 using ROOT::Experimental::RNTupleModel;
 using ROOT::Experimental::RNTupleWriteOptions;
@@ -14,11 +14,11 @@ using ROOT::Experimental::RNTupleWriter;
 #include <string>
 #include <string_view>
 
-static std::shared_ptr<std::string> MakeStringField(RNTupleModel &model,
-                                                    std::string_view name,
-                                                    EColumnType indexType) {
+static std::shared_ptr<std::string>
+MakeStringField(RNTupleModel &model, std::string_view name,
+                ENTupleColumnType indexType) {
   auto field = std::make_unique<RField<std::string>>(name);
-  field->SetColumnRepresentatives({{indexType, EColumnType::kChar}});
+  field->SetColumnRepresentatives({{indexType, ENTupleColumnType::kChar}});
   model.AddField(std::move(field));
   return model.GetDefaultEntry().GetPtr<std::string>(name);
 }
@@ -27,14 +27,16 @@ void write(std::string_view filename = "types.string.root") {
   auto model = RNTupleModel::Create();
 
   // Non-split index encoding
-  auto Index32 = MakeStringField(*model, "Index32", EColumnType::kIndex32);
-  auto Index64 = MakeStringField(*model, "Index64", EColumnType::kIndex64);
+  auto Index32 =
+      MakeStringField(*model, "Index32", ENTupleColumnType::kIndex32);
+  auto Index64 =
+      MakeStringField(*model, "Index64", ENTupleColumnType::kIndex64);
 
   // Split index encoding
   auto SplitIndex32 =
-      MakeStringField(*model, "SplitIndex32", EColumnType::kSplitIndex32);
+      MakeStringField(*model, "SplitIndex32", ENTupleColumnType::kSplitIndex32);
   auto SplitIndex64 =
-      MakeStringField(*model, "SplitIndex64", EColumnType::kSplitIndex64);
+      MakeStringField(*model, "SplitIndex64", ENTupleColumnType::kSplitIndex64);
 
   RNTupleWriteOptions options;
   options.SetCompression(0);
