@@ -1,0 +1,26 @@
+name: Execute ROOT macros
+on:
+  push:
+    branches: 'main'
+  pull_request:
+
+jobs:
+  root-v634:
+    name: ROOT 6.34
+    runs-on: ubuntu-latest
+    container: rootproject/root:6.34.00-ubuntu24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Execute ROOT macros
+        run: make
+      - name: Upload produced RNTuple ROOT files
+        uses: actions/upload-artifact@v4
+        with:
+          name: RNTuple-ROOT
+          path: "*.root"
+      - name: Upload produced validation JSON files
+        uses: actions/upload-artifact@v4
+        with:
+          name: Validation-JSON
+          path: "*.json"
