@@ -31,6 +31,8 @@ Afterwards, the implementation will be updated for the stable API (expected in R
 ### How to Run
 
 For each test, we implement a `write.C` and `read.C` macro in the corresponding subdirectory.
+The `write.C` macro produces a `.root` file with the contents as described in the `README` of each test subdirectory.
+The `read.C` macro produces a `.json` file with a human-readable representation of the data in the `.root` file.
 They can be run individually or all at once with `make` using the top-level [`Makefile`](Makefile).
 The latter is also exercised by a GitHub Actions Workflow:
 ![Execute ROOT macros](https://github.com/root-project/rntuple-validation/actions/workflows/root.yml/badge.svg)
