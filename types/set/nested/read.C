@@ -54,12 +54,10 @@ static void PrintNestedSetValue(const REntry &entry, std::string_view name,
 
 void read(std::string_view input = "types.set.nested.root",
           std::string_view output = "types.set.nested.json") {
-  if (!std::filesystem::exists("libNestedSet.so")) {
+  if (gSystem->Load("libNestedSet") == -1)
     throw std::runtime_error("could not find the required ROOT dictionaries, "
                              "please make sure to run `make` first");
-  }
 
-  gSystem->Load("libNestedSet");
   std::ofstream os(std::string{output});
   os << "[\n";
 

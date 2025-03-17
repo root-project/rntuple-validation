@@ -31,12 +31,9 @@ static std::shared_ptr<Multiset> MakeMultisetField(RNTupleModel &model,
 }
 
 void write(std::string_view filename = "types.multiset.nested.root") {
-  if (!std::filesystem::exists("libNestedMultiset.so")) {
+  if (gSystem->Load("libNestedMultiset") == -1)
     throw std::runtime_error("could not find the required ROOT dictionaries, "
                              "please make sure to run `make` first");
-  }
-
-  gSystem->Load("libNestedMultiset");
 
   auto model = RNTupleModel::Create();
 

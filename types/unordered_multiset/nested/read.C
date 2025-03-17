@@ -69,11 +69,9 @@ static void PrintNestedUnorderedMultisetValue(const REntry &entry,
 
 void read(std::string_view input = "types.unordered_multiset.nested.root",
           std::string_view output = "types.unordered_multiset.nested.json") {
-  if (!std::filesystem::exists("libNestedUnorderedMultiset.so")) {
+  if (gSystem->Load("libNestedUnorderedMultiset") == -1)
     throw std::runtime_error("could not find the required ROOT dictionaries, "
                              "please make sure to run `make` first");
-  }
-  gSystem->Load("libNestedUnorderedMultiset");
 
   std::ofstream os(std::string{output});
   os << "[\n";

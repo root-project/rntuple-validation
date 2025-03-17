@@ -31,12 +31,9 @@ static std::shared_ptr<Set> MakeSetField(RNTupleModel &model,
 }
 
 void write(std::string_view filename = "types.set.nested.root") {
-  if (!std::filesystem::exists("libNestedSet.so")) {
+  if (gSystem->Load("libNestedSet") == -1)
     throw std::runtime_error("could not find the required ROOT dictionaries, "
                              "please make sure to run `make` first");
-  }
-
-  gSystem->Load("libNestedSet");
 
   auto model = RNTupleModel::Create();
 
