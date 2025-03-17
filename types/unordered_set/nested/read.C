@@ -68,11 +68,9 @@ static void PrintNestedUnorderedSetValue(const REntry &entry,
 
 void read(std::string_view input = "types.unordered_set.nested.root",
           std::string_view output = "types.unordered_set.nested.json") {
-  if (!std::filesystem::exists("libNestedUnorderedSet.so")) {
+  if (gSystem->Load("libNestedUnorderedSet") == -1)
     throw std::runtime_error("could not find the required ROOT dictionaries, "
                              "please make sure to run `make` first");
-  }
-  gSystem->Load("libNestedUnorderedSet");
 
   std::ofstream os(std::string{output});
   os << "[\n";

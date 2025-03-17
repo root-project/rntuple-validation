@@ -34,11 +34,9 @@ MakeUnorderedMultisetField(RNTupleModel &model, std::string_view name,
 }
 
 void write(std::string_view filename = "types.unordered_multiset.nested.root") {
-  if (!std::filesystem::exists("libNestedUnorderedMultiset.so")) {
+  if (gSystem->Load("libNestedUnorderedMultiset") == -1)
     throw std::runtime_error("could not find the required ROOT dictionaries, "
                              "please make sure to run `make` first");
-  }
-  gSystem->Load("libNestedUnorderedMultiset");
 
   auto model = RNTupleModel::Create();
 
