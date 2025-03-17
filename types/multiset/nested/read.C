@@ -54,12 +54,10 @@ static void PrintNestedMultisetValue(const REntry &entry, std::string_view name,
 
 void read(std::string_view input = "types.multiset.nested.root",
           std::string_view output = "types.multiset.nested.json") {
-  if (!std::filesystem::exists("libNestedMultiset.so")) {
+  if (gSystem->Load("libNestedMultiset") == -1)
     throw std::runtime_error("could not find the required ROOT dictionaries, "
                              "please make sure to run `make` first");
-  }
 
-  gSystem->Load("libNestedMultiset");
   std::ofstream os(std::string{output});
   os << "[\n";
 
