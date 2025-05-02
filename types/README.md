@@ -3,6 +3,7 @@
  * [`fundamental`](fundamental): fundamental column types
  * [`multiset`](multiset): `std::multiset` with all `[Split]Index{32,64}` column types
  * [`optional`](optional): `std::optional` with different element types
+ * [`pair`](pair): `std::pair` with different element types
  * [`set`](set): `std::set` with all `[Split]Index{32,64}` column types
  * [`string`](string): `std::string` with all `[Split]Index{32,64}` column types
  * [`unique_ptr`](unique_ptr): `std::unique_ptr` with different element types
