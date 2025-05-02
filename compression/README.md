@@ -5,3 +5,4 @@ Therefore all tests in this category write a single `Int64` field with type `std
 The entries have ascending values and the reference `.json` files only contain the sum of all elements.
 
  * [`algorithms`](algorithms): `zlib`, `lzma`, `lz4`, `zstd`
+ * [`block`](block): big and short compression blocks
