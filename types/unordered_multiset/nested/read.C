@@ -32,7 +32,9 @@ static void PrintNestedUnorderedMultisetValue(const REntry &entry,
     std::vector innerSorted(inner.begin(), inner.end());
     std::sort(innerSorted.begin(), innerSorted.end());
     valueSorted.push_back(innerSorted);
-}
+  }
+
+  std::sort(valueSorted.begin(), valueSorted.end());
 
   os << "    \"" << name << "\": [";
   bool outerFirst = true;
