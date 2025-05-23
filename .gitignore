@@ -3,4 +3,5 @@
 
 # Ignore files related to dictionary generation
 *.pcm
+*.so
 Nested*.cxx
