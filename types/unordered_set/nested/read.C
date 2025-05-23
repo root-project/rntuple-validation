@@ -21,8 +21,6 @@ static void PrintNestedUnorderedSetValue(const REntry &entry,
                                          std::ostream &os, bool last = false) {
   UnorderedSet &value = *entry.GetPtr<UnorderedSet>(name);
 
-  std::vector<UnorderedSet::value_type> valueInnerSorted(
-      value.begin(), value.end());
   std::vector<std::vector<UnorderedSet::value_type::value_type>> valueSorted;
 
   for (auto inner : value) {

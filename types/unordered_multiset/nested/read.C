@@ -23,8 +23,6 @@ static void PrintNestedUnorderedMultisetValue(const REntry &entry,
                                               bool last = false) {
   UnorderedMultiset &value = *entry.GetPtr<UnorderedMultiset>(name);
 
-  std::vector<UnorderedMultiset::value_type> valueInnerSorted(value.begin(),
-                                                              value.end());
   std::vector<std::vector<UnorderedMultiset::value_type::value_type>>
       valueSorted;
 
