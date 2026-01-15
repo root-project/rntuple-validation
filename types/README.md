@@ -4,6 +4,7 @@
  * [`multiset`](multiset): `std::multiset` with all `[Split]Index{32,64}` column types
  * [`optional`](optional): `std::optional` with different element types
  * [`pair`](pair): `std::pair` with different element types
+ * [`RVec`](RVec): `ROOT::RVec` with all `[Split]Index{32,64}` column types
  * [`set`](set): `std::set` with all `[Split]Index{32,64}` column types
  * [`string`](string): `std::string` with all `[Split]Index{32,64}` column types
  * [`tuple`](tuple): `std::tuple` with different element types
