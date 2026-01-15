@@ -31,6 +31,8 @@ void read_structure(std::string_view input, std::string_view output) {
     // Newline is intentionally missing, may need to print a comma before the
     // next entry.
   }
-  os << "\n";
+  if (!first) {
+    os << "\n";
+  }
   os << "]\n";
 }
