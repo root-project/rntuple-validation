@@ -5,3 +5,4 @@ Therefore all tests in this category write a single `Int32` field with type `std
 
  * [`clusters`](clusters): multiple clusters
  * [`cluster_groups`](cluster_groups): multiple cluster groups
+ * [`empty`](empty): empty RNTuple without entries
