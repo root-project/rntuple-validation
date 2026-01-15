@@ -12,13 +12,15 @@ using ROOT::Experimental::RNTupleWriter;
 #include <variant>
 #include <vector>
 
-using Vector = std::vector<std::int32_t>;
-using Variant = std::variant<std::int32_t, std::string, Vector>;
+using VectorInt32 = std::vector<std::int32_t>;
+using Variant = std::variant<std::int32_t, std::string, VectorInt32>;
+using Vector = std::vector<std::variant<std::int32_t, std::string>>;
 
 void write(std::string_view filename = "types.variant.root") {
   auto model = RNTupleModel::Create();
 
   auto value = model->MakeField<Variant>("f");
+  auto vector = model->MakeField<Vector>("Vector");
 
   RNTupleWriteOptions options;
   options.SetCompression(0);
@@ -27,21 +29,26 @@ void write(std::string_view filename = "types.variant.root") {
 
   // First entry: std::int32_t
   *value = 1;
+  *vector = {1};
   writer->Fill();
 
   // Second entry: std::string
   *value = "abc";
+  *vector = {"abc"};
   writer->Fill();
 
   // Third entry: std::vector<std::int32_t>
-  *value = Vector{1, 2, 3};
+  *value = VectorInt32{1, 2, 3};
+  *vector = {1, "2", 3};
   writer->Fill();
 
   // Fourth entry: empty std::string
   *value = "";
+  *vector = {""};
   writer->Fill();
 
   // Fifth entry: empty std::vector
   *value = {};
+  *vector = {};
   writer->Fill();
 }

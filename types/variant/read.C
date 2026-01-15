@@ -12,8 +12,9 @@ using ROOT::Experimental::RNTupleReader;
 #include <variant>
 #include <vector>
 
-using Vector = std::vector<std::int32_t>;
-using Variant = std::variant<std::int32_t, std::string, Vector>;
+using VectorInt32 = std::vector<std::int32_t>;
+using Variant = std::variant<std::int32_t, std::string, VectorInt32>;
+using Vector = std::vector<std::variant<std::int32_t, std::string>>;
 
 static void PrintVariantValue(const REntry &entry, std::string_view name,
                               std::ostream &os, bool last = false) {
@@ -24,7 +25,7 @@ static void PrintVariantValue(const REntry &entry, std::string_view name,
   } else if (value.index() == 1) {
     os << "\"" << std::get<std::string>(value) << "\"";
   } else if (value.index() == 2) {
-    Vector &vectorValue = std::get<Vector>(value);
+    VectorInt32 &vectorValue = std::get<VectorInt32>(value);
     os << "[";
     bool first = true;
     for (auto element : vectorValue) {
@@ -40,6 +41,35 @@ static void PrintVariantValue(const REntry &entry, std::string_view name,
     }
     os << "]";
   }
+
+  if (!last) {
+    os << ",";
+  }
+  os << "\n";
+}
+
+static void PrintVectorValue(const REntry &entry, std::string_view name,
+                             std::ostream &os, bool last = false) {
+  Vector &value = *entry.GetPtr<Vector>(name);
+  os << "    \"" << name << "\": [";
+  bool first = true;
+  for (auto &element : value) {
+    if (first) {
+      first = false;
+    } else {
+      os << ",";
+    }
+    os << "\n      ";
+    if (element.index() == 0) {
+      os << std::get<std::int32_t>(element);
+    } else if (element.index() == 1) {
+      os << "\"" << std::get<std::string>(element) << "\"";
+    }
+  }
+  if (!value.empty()) {
+    os << "\n    ";
+  }
+  os << "]";
 
   if (!last) {
     os << ",";
@@ -65,7 +95,8 @@ void read(std::string_view input = "types.variant.root",
     }
     os << "  {\n";
 
-    PrintVariantValue(entry, "f", os, /*last=*/true);
+    PrintVariantValue(entry, "f", os);
+    PrintVectorValue(entry, "Vector", os, /*last=*/true);
 
     os << "  }";
     // Newline is intentionally missing, may need to print a comma before the
