@@ -1,6 +1,8 @@
 #include <ROOT/REntry.hxx>
+#include <ROOT/RError.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
+using ROOT::Experimental::RException;
 using ROOT::Experimental::RNTupleReader;
 
 #include <cstdint>
@@ -11,9 +13,20 @@ using ROOT::Experimental::RNTupleReader;
 
 void read_structure(std::string_view input, std::string_view output) {
   std::ofstream os(std::string{output});
-  os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  std::unique_ptr<RNTupleReader> reader;
+  try {
+    reader = RNTupleReader::Open("ntpl", input);
+  } catch (const RException &e) {
+    std::string msgWithoutStacktrace;
+    std::getline(std::istringstream(e.what()), msgWithoutStacktrace);
+    os << "{\n";
+    os << "  \"error\": \"" << msgWithoutStacktrace << "\"\n";
+    os << "}\n";
+    return;
+  }
+
+  os << "[\n";
   auto Int32 =
       reader->GetModel().GetDefaultEntry().GetPtr<std::int32_t>("Int32");
   bool first = true;
