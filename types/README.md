@@ -11,6 +11,7 @@
  * [`unique_ptr`](unique_ptr): `std::unique_ptr` with different element types
  * [`unordered_multiset`](unordered_multiset): `std::unordered_multiset` with all `[Split]Index{32,64}` column types
  * [`unordered_set`](unordered_set): `std::unordered_set` with all `[Split]Index{32,64}` column types
+ * [`user`](user): user-defined types, such as classes and enums
  * [`variant`](variant): `std::variant` with `Switch` column type
  * [`vector`](vector): `std::vector` with all `[Split]Index{32,64}` column types
 
