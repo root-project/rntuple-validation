@@ -48,7 +48,7 @@ void write(std::string_view filename = "types.variant.root") {
   writer->Fill();
 
   // Fifth entry: empty std::vector
-  *value = {};
+  *value = VectorInt32{};
   *vector = {};
   writer->Fill();
 }
