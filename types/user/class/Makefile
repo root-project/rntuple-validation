@@ -1,20 +1,26 @@
-CXX=g++
-CXXFLAGS_ROOT=$(shell root-config --cflags)
-ifeq ($(CXXFLAGS_ROOT),)
-  $(error cannot find root-config: make sure to source thisroot.sh)
+ROOT_CONFIG ?= $(shell which root-config)
+ifeq ($(ROOT_CONFIG),)
+$(error Could not find root-config)
 endif
-CXXFLAGS=-Wall $(CXXFLAGS_ROOT)
-LDFLAGS=$(shell root-config --libs)
+ROOTCLING ?= $(shell which rootcling)
+ifeq ($(ROOTCLING),)
+$(error Could not find rootcling)
+endif
+
+CXX := $(shell $(ROOT_CONFIG) --cxx)
+CXXFLAGS_ROOT := $(shell $(ROOT_CONFIG) --cflags)
+CXXFLAGS := -Wall $(CXXFLAGS_ROOT)
+LDFLAGS := $(shell $(ROOT_CONFIG) --libs)
 
 .PHONY: all clean
 
-all: UserClass.cxx libUserClass.so
+all: libUserClass.so
 
 UserClass.cxx: UserClass.hxx LinkDef.h
-	rootcling -f $@ $^
+	$(ROOTCLING) -f $@ $^
 
 libUserClass.so: UserClass.cxx
 	$(CXX) -shared -fPIC -o $@ $^ $(CXXFLAGS) $(LDFLAGS)
 
 clean:
-	rm -f UserClass.cxx UserClass_rdict.pcm libUserClass.so
+	$(RM) UserClass.cxx UserClass_rdict.pcm libUserClass.so

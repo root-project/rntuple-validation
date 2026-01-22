@@ -1,4 +1,4 @@
-ROOT_EXE := $(shell which root.exe)
+ROOT_EXE ?= $(shell which root.exe)
 ifeq ($(ROOT_EXE),)
 $(error Could not find root.exe)
 endif
