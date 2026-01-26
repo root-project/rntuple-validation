@@ -15,13 +15,16 @@ WRITE_C := $(sort $(shell find . -name write.C))
 READ_C := $(sort $(shell find . -name read.C))
 
 .PHONY: dict
-dict:
-	@$(foreach d,$(DICT_MAKEFILE_DIR),make -C $(d) &&) true
+dict:: $(DICT_MAKEFILE_DIR)
+$(DICT_MAKEFILE_DIR)::
+	@$(MAKE) -C $@
 
 .PHONY: write
-write:
-	@$(foreach c,$(WRITE_C),LD_LIBRARY_PATH=$(shell dirname $(c)) $(ROOT_EXE) -q -l $(c) &&) true
+write:: $(WRITE_C)
+$(WRITE_C)::
+	@LD_LIBRARY_PATH=$(shell dirname $@) $(ROOT_EXE) -q -l $@
 
 .PHONY: read
-read:
-	@$(foreach c,$(READ_C),LD_LIBRARY_PATH=$(shell dirname $(c)) $(ROOT_EXE) -q -l $(c) &&) true
+read:: $(READ_C)
+$(READ_C)::
+	@LD_LIBRARY_PATH=$(shell dirname $@) $(ROOT_EXE) -q -l $@
