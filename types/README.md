@@ -2,6 +2,7 @@
 
  * [`array`](array): `std::array`
  * [`atomic`](atomic): `std::atomic`
+ * [`bitset`](bitset): `std::bitset`
  * [`fundamental`](fundamental): fundamental column types
  * [`multiset`](multiset): `std::multiset` with all `[Split]Index{32,64}` column types
  * [`optional`](optional): `std::optional` with different element types
