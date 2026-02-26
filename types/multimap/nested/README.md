@@ -1,0 +1,18 @@
+# `std::multimap<std::string, std::multimap<std::string, std::int32_t>>`
+
+## Fields
+
+- `[Split]Index{32,64}`
+
+with the corresponding column type for the offset column of the two collection parent fields.
+All child fields use the default column types for `std::string` (`SplitIndex64` for the principal column, `Char` for the second column) and `std::int32_t` (`SplitInt32`).
+
+## Entries
+
+1. Single-element maps, with ascending values for both key and value
+2. Empty maps
+3. Increasing number of elements in the outer map, with arbitrary lengths of the inner maps
+
+## Dictionaries
+
+These tests require ROOT dictionaries, which can be generated with the provided `Makefile` in this directory. This will create a `libNestedMultimap` shared object.

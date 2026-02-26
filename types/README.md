@@ -5,6 +5,7 @@
  * [`bitset`](bitset): `std::bitset`
  * [`fundamental`](fundamental): fundamental column types
  * [`map`](map): `std::map` with all `[Split]Index{32,64}` column types
+ * [`multimap`](multimap): `std::multimap` with all `[Split]Index{32,64}` column types
  * [`multiset`](multiset): `std::multiset` with all `[Split]Index{32,64}` column types
  * [`optional`](optional): `std::optional` with different element types
  * [`pair`](pair): `std::pair` with different element types
