@@ -4,6 +4,7 @@
  * [`atomic`](atomic): `std::atomic`
  * [`bitset`](bitset): `std::bitset`
  * [`fundamental`](fundamental): fundamental column types
+ * [`map`](map): `std::map` with all `[Split]Index{32,64}` column types
  * [`multiset`](multiset): `std::multiset` with all `[Split]Index{32,64}` column types
  * [`optional`](optional): `std::optional` with different element types
  * [`pair`](pair): `std::pair` with different element types
@@ -39,8 +40,8 @@ If `C` is a container type with a single item field, we test the following nesti
  * `C<C<std::int32_t>>`
 
 If `M` is an dictionary container type, we test the following nestings:
- * `M<std::int32_t, std::int32_t>`
- * `M<M<std::int32_t, std::int32_t>, M<std::int32_t, std::int32_t>>`
+ * `M<std::string, std::int32_t>`
+ * `M<M<std::string, std::int32_t>, M<std::string, std::int32_t>>`
 
 ### Record Fields
 
