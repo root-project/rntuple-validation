@@ -30,6 +30,7 @@ void write(std::string_view filename = "structure.feature_flag.root") {
                            .FieldId(0)
                            .MakeDescriptor()
                            .Unwrap());
+  auto descriptor = descBuilder.MoveDescriptor();
 
   RNTupleWriteOptions options;
   options.SetCompression(0);
@@ -39,16 +40,15 @@ void write(std::string_view filename = "structure.feature_flag.root") {
 
   RNTupleSerializer serializer;
 
-  auto ctx = serializer.SerializeHeader(nullptr, descBuilder.GetDescriptor());
+  auto ctx = serializer.SerializeHeader(nullptr, descriptor);
   auto buffer = std::make_unique<unsigned char[]>(ctx.GetHeaderSize());
-  ctx = serializer.SerializeHeader(buffer.get(), descBuilder.GetDescriptor());
+  ctx = serializer.SerializeHeader(buffer.get(), descriptor);
   writer->WriteNTupleHeader(buffer.get(), ctx.GetHeaderSize(),
                             ctx.GetHeaderSize());
 
-  auto szFooter =
-      serializer.SerializeFooter(nullptr, descBuilder.GetDescriptor(), ctx);
+  auto szFooter = serializer.SerializeFooter(nullptr, descriptor, ctx);
   buffer = std::make_unique<unsigned char[]>(szFooter);
-  serializer.SerializeFooter(buffer.get(), descBuilder.GetDescriptor(), ctx);
+  serializer.SerializeFooter(buffer.get(), descriptor, ctx);
   writer->WriteNTupleFooter(buffer.get(), szFooter, szFooter);
 
   writer->Commit();
