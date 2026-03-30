@@ -1,4 +1,4 @@
 # User-defined Types
 
- * [`class`]: user-defined class(es)
- * [`enum`]: user-defined enum(s)
+ * [`class`](class): user-defined class(es)
+ * [`enum`](enum): user-defined enum(s)
