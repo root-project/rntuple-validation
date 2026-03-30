@@ -2,8 +2,8 @@
 #include <ROOT/RNTupleReader.hxx>
 #include <ROOT/RVec.hxx>
 
-using ROOT::Experimental::REntry;
-using ROOT::Experimental::RNTupleReader;
+using ROOT::REntry;
+using ROOT::RNTupleReader;
 
 #include <cstdint>
 #include <fstream>

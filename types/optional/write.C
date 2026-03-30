@@ -4,11 +4,11 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::Experimental::EColumnType;
-using ROOT::Experimental::RField;
-using ROOT::Experimental::RNTupleModel;
-using ROOT::Experimental::RNTupleWriteOptions;
-using ROOT::Experimental::RNTupleWriter;
+using ROOT::ENTupleColumnType;
+using ROOT::RField;
+using ROOT::RNTupleModel;
+using ROOT::RNTupleWriteOptions;
+using ROOT::RNTupleWriter;
 
 #include <cstdint>
 #include <memory>
@@ -24,7 +24,7 @@ using VectorInt32Ty = std::vector<std::int32_t>;
 
 static std::shared_ptr<OptInt32Ty> MakeIntField(RNTupleModel &model,
                                                 std::string_view name,
-                                                EColumnType indexType) {
+                                                ENTupleColumnType indexType) {
   auto field = std::make_unique<RField<OptInt32Ty>>(name);
   field->SetColumnRepresentatives({{indexType}});
   model.AddField(std::move(field));
@@ -35,14 +35,14 @@ void write(std::string_view filename = "types.optional.root") {
   auto model = RNTupleModel::Create();
 
   // Non-split index encoding
-  auto Index32 = MakeIntField(*model, "Index32", EColumnType::kIndex32);
-  auto Index64 = MakeIntField(*model, "Index64", EColumnType::kIndex64);
+  auto Index32 = MakeIntField(*model, "Index32", ENTupleColumnType::kIndex32);
+  auto Index64 = MakeIntField(*model, "Index64", ENTupleColumnType::kIndex64);
 
   // Split index encoding
   auto SplitIndex32 =
-      MakeIntField(*model, "SplitIndex32", EColumnType::kSplitIndex32);
+      MakeIntField(*model, "SplitIndex32", ENTupleColumnType::kSplitIndex32);
   auto SplitIndex64 =
-      MakeIntField(*model, "SplitIndex64", EColumnType::kSplitIndex64);
+      MakeIntField(*model, "SplitIndex64", ENTupleColumnType::kSplitIndex64);
 
   auto String = model->MakeField<std::optional<std::string>>("String");
   auto Variant = model->MakeField<std::optional<VariantTy>>("Variant");

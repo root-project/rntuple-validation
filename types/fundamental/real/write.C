@@ -4,11 +4,11 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::Experimental::EColumnType;
-using ROOT::Experimental::RField;
-using ROOT::Experimental::RNTupleModel;
-using ROOT::Experimental::RNTupleWriteOptions;
-using ROOT::Experimental::RNTupleWriter;
+using ROOT::ENTupleColumnType;
+using ROOT::RField;
+using ROOT::RNTupleModel;
+using ROOT::RNTupleWriteOptions;
+using ROOT::RNTupleWriter;
 
 #include <limits>
 #include <memory>
@@ -17,7 +17,7 @@ using ROOT::Experimental::RNTupleWriter;
 template <typename T>
 static std::shared_ptr<T> MakeFundamentalField(RNTupleModel &model,
                                                std::string_view name,
-                                               EColumnType type) {
+                                               ENTupleColumnType type) {
   auto field = std::make_unique<RField<T>>(name);
   field->SetColumnRepresentatives({{type}});
   model.AddField(std::move(field));
@@ -29,24 +29,24 @@ void write(std::string_view filename = "types.fundamental.real.root") {
 
   // Non-split float encoding
   auto FloatReal16 =
-      MakeFundamentalField<float>(*model, "FloatReal16", EColumnType::kReal16);
+      MakeFundamentalField<float>(*model, "FloatReal16", ENTupleColumnType::kReal16);
   auto FloatReal32 =
-      MakeFundamentalField<float>(*model, "FloatReal32", EColumnType::kReal32);
+      MakeFundamentalField<float>(*model, "FloatReal32", ENTupleColumnType::kReal32);
   auto DoubleReal16 = MakeFundamentalField<double>(*model, "DoubleReal16",
-                                                   EColumnType::kReal16);
+                                                   ENTupleColumnType::kReal16);
   auto DoubleReal32 = MakeFundamentalField<double>(*model, "DoubleReal32",
-                                                   EColumnType::kReal32);
+                                                   ENTupleColumnType::kReal32);
   auto DoubleReal64 = MakeFundamentalField<double>(*model, "DoubleReal64",
-                                                   EColumnType::kReal64);
+                                                   ENTupleColumnType::kReal64);
 
   // Split float encoding
   // NB there is no kSplitReal16
   auto FloatSplitReal32 = MakeFundamentalField<float>(
-      *model, "FloatSplitReal32", EColumnType::kSplitReal32);
+      *model, "FloatSplitReal32", ENTupleColumnType::kSplitReal32);
   auto DoubleSplitReal32 = MakeFundamentalField<double>(
-      *model, "DoubleSplitReal32", EColumnType::kSplitReal32);
+      *model, "DoubleSplitReal32", ENTupleColumnType::kSplitReal32);
   auto DoubleSplitReal64 = MakeFundamentalField<double>(
-      *model, "DoubleSplitReal64", EColumnType::kSplitReal64);
+      *model, "DoubleSplitReal64", ENTupleColumnType::kSplitReal64);
 
   RNTupleWriteOptions options;
   options.SetCompression(0);

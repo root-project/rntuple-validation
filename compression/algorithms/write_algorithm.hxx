@@ -3,10 +3,10 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::Experimental::EColumnType;
-using ROOT::Experimental::RNTupleModel;
-using ROOT::Experimental::RNTupleWriteOptions;
-using ROOT::Experimental::RNTupleWriter;
+using ROOT::ENTupleColumnType;
+using ROOT::RNTupleModel;
+using ROOT::RNTupleWriteOptions;
+using ROOT::RNTupleWriter;
 
 #include <cstdint>
 #include <memory>
@@ -17,7 +17,7 @@ void write_algorithm(std::string_view filename, std::uint32_t compression) {
 
   auto Int64 = model->MakeField<std::int64_t>("Int64");
   model->GetMutableField("Int64").SetColumnRepresentatives(
-      {{EColumnType::kSplitInt64}});
+      {{ENTupleColumnType::kSplitInt64}});
 
   RNTupleWriteOptions options;
   options.SetCompression(compression);
