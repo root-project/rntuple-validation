@@ -32,9 +32,10 @@ void write(std::string_view filename = "structure.feature_flag.root") {
                            .Unwrap());
 
   RNTupleWriteOptions options;
+  options.SetCompression(0);
   auto writer = RNTupleFileWriter::Recreate(
       "ntpl", filename, RNTupleFileWriter::EContainerFormat::kTFile,
-      RNTupleWriteOptions());
+      options);
 
   RNTupleSerializer serializer;
 
