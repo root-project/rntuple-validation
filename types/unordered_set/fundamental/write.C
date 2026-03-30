@@ -4,11 +4,11 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::Experimental::EColumnType;
-using ROOT::Experimental::RField;
-using ROOT::Experimental::RNTupleModel;
-using ROOT::Experimental::RNTupleWriteOptions;
-using ROOT::Experimental::RNTupleWriter;
+using ROOT::ENTupleColumnType;
+using ROOT::RField;
+using ROOT::RNTupleModel;
+using ROOT::RNTupleWriteOptions;
+using ROOT::RNTupleWriter;
 
 #include <cstdint>
 #include <memory>
@@ -19,7 +19,7 @@ using UnorderedSet = std::unordered_set<std::int32_t>;
 
 static std::shared_ptr<UnorderedSet>
 MakeUnorderedSetField(RNTupleModel &model, std::string_view name,
-                      EColumnType indexType) {
+                      ENTupleColumnType indexType) {
   auto field = std::make_unique<RField<UnorderedSet>>(name);
   field->SetColumnRepresentatives({{indexType}});
   model.AddField(std::move(field));
@@ -31,15 +31,15 @@ void write(std::string_view filename = "types.unordered_set.fundamental.root") {
 
   // Non-split index encoding
   auto Index32 =
-      MakeUnorderedSetField(*model, "Index32", EColumnType::kIndex32);
+      MakeUnorderedSetField(*model, "Index32", ENTupleColumnType::kIndex32);
   auto Index64 =
-      MakeUnorderedSetField(*model, "Index64", EColumnType::kIndex64);
+      MakeUnorderedSetField(*model, "Index64", ENTupleColumnType::kIndex64);
 
   // Split index encoding
   auto SplitIndex32 =
-      MakeUnorderedSetField(*model, "SplitIndex32", EColumnType::kSplitIndex32);
+      MakeUnorderedSetField(*model, "SplitIndex32", ENTupleColumnType::kSplitIndex32);
   auto SplitIndex64 =
-      MakeUnorderedSetField(*model, "SplitIndex64", EColumnType::kSplitIndex64);
+      MakeUnorderedSetField(*model, "SplitIndex64", ENTupleColumnType::kSplitIndex64);
 
   RNTupleWriteOptions options;
   options.SetCompression(0);

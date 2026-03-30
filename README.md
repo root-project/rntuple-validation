@@ -17,10 +17,9 @@ More tests are planned in the future, please [consult the list of issues](https:
 ## Reference Implementation
 
 This repository also contains a reference implementation with ROOT macros.
-They currently target ROOT v6.34 with the first official version of the RNTuple on-disk binary format.
-In this release, the API is not yet finalized and all classes are in the `ROOT::Experimental` namespace.
-We rely on this version to produce a first set of reference files that can be used to test backwards compatibility.
-Afterwards, the implementation will be updated for the stable API (available since ROOT v6.36).
+They target the stable API released with ROOT v6.36 and should work on newer versions.
+Compatibility with ROOT v6.34 can be tested with version v1.0 of the RNTuple Validation Suite.
+It was the first official version of the RNTuple on-disk binary format, but the API was not yet finalized and all classes were in the `ROOT::Experimental` namespace.
 
 ### How to Run
 

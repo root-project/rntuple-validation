@@ -4,10 +4,10 @@
 #include <ROOT/RNTupleWriter.hxx>
 #include <ROOT/RVec.hxx>
 
-using ROOT::Experimental::RField;
-using ROOT::Experimental::RNTupleModel;
-using ROOT::Experimental::RNTupleWriteOptions;
-using ROOT::Experimental::RNTupleWriter;
+using ROOT::RField;
+using ROOT::RNTupleModel;
+using ROOT::RNTupleWriteOptions;
+using ROOT::RNTupleWriter;
 
 #include <cstdint>
 #include <memory>

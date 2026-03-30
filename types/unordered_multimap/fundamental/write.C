@@ -4,11 +4,11 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::Experimental::EColumnType;
-using ROOT::Experimental::RField;
-using ROOT::Experimental::RNTupleModel;
-using ROOT::Experimental::RNTupleWriteOptions;
-using ROOT::Experimental::RNTupleWriter;
+using ROOT::ENTupleColumnType;
+using ROOT::RField;
+using ROOT::RNTupleModel;
+using ROOT::RNTupleWriteOptions;
+using ROOT::RNTupleWriter;
 
 #include <cstdint>
 #include <memory>
@@ -19,7 +19,7 @@ using UnorderedMultimap = std::unordered_multimap<std::string, std::int32_t>;
 
 static std::shared_ptr<UnorderedMultimap> MakeMultimapField(RNTupleModel &model,
                                                   std::string_view name,
-                                                  EColumnType indexType) {
+                                                  ENTupleColumnType indexType) {
   auto field = std::make_unique<RField<UnorderedMultimap>>(name);
   field->SetColumnRepresentatives({{indexType}});
   model.AddField(std::move(field));
@@ -30,14 +30,14 @@ void write(std::string_view filename = "types.unordered_multimap.fundamental.roo
   auto model = RNTupleModel::Create();
 
   // Non-split index encoding
-  auto Index32 = MakeMultimapField(*model, "Index32", EColumnType::kIndex32);
-  auto Index64 = MakeMultimapField(*model, "Index64", EColumnType::kIndex64);
+  auto Index32 = MakeMultimapField(*model, "Index32", ENTupleColumnType::kIndex32);
+  auto Index64 = MakeMultimapField(*model, "Index64", ENTupleColumnType::kIndex64);
 
   // Split index encoding
   auto SplitIndex32 =
-      MakeMultimapField(*model, "SplitIndex32", EColumnType::kSplitIndex32);
+      MakeMultimapField(*model, "SplitIndex32", ENTupleColumnType::kSplitIndex32);
   auto SplitIndex64 =
-      MakeMultimapField(*model, "SplitIndex64", EColumnType::kSplitIndex64);
+      MakeMultimapField(*model, "SplitIndex64", ENTupleColumnType::kSplitIndex64);
 
   RNTupleWriteOptions options;
   options.SetCompression(0);

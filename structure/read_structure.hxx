@@ -2,8 +2,8 @@
 #include <ROOT/RError.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::Experimental::RException;
-using ROOT::Experimental::RNTupleReader;
+using ROOT::RException;
+using ROOT::RNTupleReader;
 
 #include <cstdint>
 #include <fstream>

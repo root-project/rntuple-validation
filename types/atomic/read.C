@@ -1,8 +1,8 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::Experimental::REntry;
-using ROOT::Experimental::RNTupleReader;
+using ROOT::REntry;
+using ROOT::RNTupleReader;
 
 #include <atomic>
 #include <cstddef> // for std::byte

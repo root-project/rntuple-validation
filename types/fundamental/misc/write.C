@@ -4,11 +4,11 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::Experimental::EColumnType;
-using ROOT::Experimental::RField;
-using ROOT::Experimental::RNTupleModel;
-using ROOT::Experimental::RNTupleWriteOptions;
-using ROOT::Experimental::RNTupleWriter;
+using ROOT::ENTupleColumnType;
+using ROOT::RField;
+using ROOT::RNTupleModel;
+using ROOT::RNTupleWriteOptions;
+using ROOT::RNTupleWriter;
 
 #include <cstddef> // for std::byte
 #include <limits>
@@ -18,7 +18,7 @@ using ROOT::Experimental::RNTupleWriter;
 template <typename T>
 static std::shared_ptr<T> MakeFundamentalField(RNTupleModel &model,
                                                std::string_view name,
-                                               EColumnType type) {
+                                               ENTupleColumnType type) {
   auto field = std::make_unique<RField<T>>(name);
   field->SetColumnRepresentatives({{type}});
   model.AddField(std::move(field));
@@ -28,10 +28,10 @@ static std::shared_ptr<T> MakeFundamentalField(RNTupleModel &model,
 void write(std::string_view filename = "types.fundamental.misc.root") {
   auto model = RNTupleModel::Create();
 
-  auto Bit = MakeFundamentalField<bool>(*model, "Bit", EColumnType::kBit);
+  auto Bit = MakeFundamentalField<bool>(*model, "Bit", ENTupleColumnType::kBit);
   auto Byte =
-      MakeFundamentalField<std::byte>(*model, "Byte", EColumnType::kByte);
-  auto Char = MakeFundamentalField<char>(*model, "Char", EColumnType::kChar);
+      MakeFundamentalField<std::byte>(*model, "Byte", ENTupleColumnType::kByte);
+  auto Char = MakeFundamentalField<char>(*model, "Char", ENTupleColumnType::kChar);
 
   RNTupleWriteOptions options;
   options.SetCompression(0);

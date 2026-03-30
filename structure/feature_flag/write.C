@@ -8,13 +8,13 @@
 #include <string_view>
 #include <utility>
 
-using ROOT::Experimental::RFieldZero;
-using ROOT::Experimental::RNTupleDescriptor;
-using ROOT::Experimental::RNTupleWriteOptions;
-using ROOT::Experimental::Internal::RFieldDescriptorBuilder;
-using ROOT::Experimental::Internal::RNTupleDescriptorBuilder;
-using ROOT::Experimental::Internal::RNTupleFileWriter;
-using ROOT::Experimental::Internal::RNTupleSerializer;
+using ROOT::RFieldZero;
+using ROOT::RNTupleDescriptor;
+using ROOT::RNTupleWriteOptions;
+using ROOT::Internal::RFieldDescriptorBuilder;
+using ROOT::Internal::RNTupleDescriptorBuilder;
+using ROOT::Internal::RNTupleFileWriter;
+using ROOT::Internal::RNTupleSerializer;
 
 void write(std::string_view filename = "structure.feature_flag.root") {
   // Note that we are writing a file with a so-far unused feature flag. This
@@ -40,13 +40,13 @@ void write(std::string_view filename = "structure.feature_flag.root") {
 
   RNTupleSerializer serializer;
 
-  auto ctx = serializer.SerializeHeader(nullptr, descriptor);
+  auto ctx = serializer.SerializeHeader(nullptr, descriptor).Unwrap();
   auto buffer = std::make_unique<unsigned char[]>(ctx.GetHeaderSize());
-  ctx = serializer.SerializeHeader(buffer.get(), descriptor);
+  ctx = serializer.SerializeHeader(buffer.get(), descriptor).Unwrap();
   writer->WriteNTupleHeader(buffer.get(), ctx.GetHeaderSize(),
                             ctx.GetHeaderSize());
 
-  auto szFooter = serializer.SerializeFooter(nullptr, descriptor, ctx);
+  auto szFooter = serializer.SerializeFooter(nullptr, descriptor, ctx).Unwrap();
   buffer = std::make_unique<unsigned char[]>(szFooter);
   serializer.SerializeFooter(buffer.get(), descriptor, ctx);
   writer->WriteNTupleFooter(buffer.get(), szFooter, szFooter);

@@ -4,11 +4,11 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::Experimental::EColumnType;
-using ROOT::Experimental::RField;
-using ROOT::Experimental::RNTupleModel;
-using ROOT::Experimental::RNTupleWriteOptions;
-using ROOT::Experimental::RNTupleWriter;
+using ROOT::ENTupleColumnType;
+using ROOT::RField;
+using ROOT::RNTupleModel;
+using ROOT::RNTupleWriteOptions;
+using ROOT::RNTupleWriter;
 
 #include <TSystem.h>
 
@@ -23,11 +23,12 @@ using Multimap =
 
 static std::shared_ptr<Multimap> MakeMultimapField(RNTupleModel &model,
                                                    std::string_view name,
-                                                   EColumnType indexType) {
+                                                   ENTupleColumnType indexType) {
   auto field = std::make_unique<RField<Multimap>>(name);
   field->SetColumnRepresentatives({{indexType}});
-  field->GetSubFields()[0]->GetSubFields()[1]->SetColumnRepresentatives(
-      {{indexType}});
+  field->GetMutableSubfields()[0]
+      ->GetMutableSubfields()[1]
+      ->SetColumnRepresentatives({{indexType}});
   model.AddField(std::move(field));
   return model.GetDefaultEntry().GetPtr<Multimap>(name);
 }
@@ -40,14 +41,14 @@ void write(std::string_view filename = "types.multimap.nested.root") {
   auto model = RNTupleModel::Create();
 
   // Non-split index encoding
-  auto Index32 = MakeMultimapField(*model, "Index32", EColumnType::kIndex32);
-  auto Index64 = MakeMultimapField(*model, "Index64", EColumnType::kIndex64);
+  auto Index32 = MakeMultimapField(*model, "Index32", ENTupleColumnType::kIndex32);
+  auto Index64 = MakeMultimapField(*model, "Index64", ENTupleColumnType::kIndex64);
 
   // Split index encoding
   auto SplitIndex32 =
-      MakeMultimapField(*model, "SplitIndex32", EColumnType::kSplitIndex32);
+      MakeMultimapField(*model, "SplitIndex32", ENTupleColumnType::kSplitIndex32);
   auto SplitIndex64 =
-      MakeMultimapField(*model, "SplitIndex64", EColumnType::kSplitIndex64);
+      MakeMultimapField(*model, "SplitIndex64", ENTupleColumnType::kSplitIndex64);
 
   RNTupleWriteOptions options;
   options.SetCompression(0);
