@@ -3,6 +3,7 @@
 #include <ROOT/RNTupleDescriptor.hxx>
 #include <ROOT/RNTupleSerialize.hxx>
 #include <ROOT/RNTupleWriteOptions.hxx>
+#include <ROOT/RVersion.hxx>
 
 #include <memory>
 #include <string_view>
@@ -19,8 +20,9 @@ void write(std::string_view filename = "structure.feature_flag.root") {
   // low-level classes to create the file.
 
   RNTupleDescriptorBuilder descBuilder;
-  // The following line will be required as of ROOT v6.36
-  // descBuilder.SetVersionForWriting();
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6, 36, 4)
+  descBuilder.SetVersionForWriting();
+#endif
   descBuilder.SetNTuple("ntpl", "");
   descBuilder.SetFeature(ROOT::RNTupleDescriptor::kFeatureFlagTest);
   descBuilder.AddField(RFieldDescriptorBuilder::FromField(ROOT::RFieldZero())
