@@ -48,7 +48,7 @@ void write(std::string_view filename = "structure.feature_flag.root") {
   serializer.SerializeFooter(buffer.get(), descriptor, ctx);
   writer->WriteNTupleFooter(buffer.get(), szFooter, szFooter);
 
-  writer->Commit();
+  writer->Commit(options.GetCompression());
   // Call destructor to flush data to disk
   writer.reset();
 }
