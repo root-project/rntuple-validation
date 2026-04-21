@@ -4,7 +4,7 @@ The *RNTuple Validation Suite* provides conformance tests for the [RNTuple Binar
 The goal is to cover all parts of the specification with implications on the format.
 It can be used to validate both writer and reader implementations of the RNTuple specification.
 To that end, each test comes with a written description of the schema and the expected data.
-We also provide a set of reference `.root` and `.json` files (see below).
+Reference files for version 1.0.0 can be found under the [GitHub Release](https://github.com/root-project/rntuple-validation/releases/tag/v1.0.0).
 
 ## Test Categories
 

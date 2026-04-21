@@ -9,3 +9,5 @@
 
 1. Ascending values
 2. Empty collection
+
+The values can be found in the reference file `projections.nested.json`.

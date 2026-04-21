@@ -19,3 +19,5 @@ with the corresponding field, column types and bit width.
 4. Smallest positive normal values with N bits
 5. Smallest positive subnormal values with N bits
 6. Maximum values with N bits
+
+The values can be found in the reference file `types.fundamental.real32quant.json`.

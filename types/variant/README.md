@@ -13,6 +13,8 @@
 4. Empty `std::string`
 5. Empty `std::vector`
 
+The values can be found in the reference file `types.variant.json`.
+
 __Missing:__
 A `std::variant` that is `valueless_by_exception`.
 This requires a type that throws during move assignment.

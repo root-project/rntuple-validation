@@ -14,3 +14,5 @@ with the corresponding column types.
 3. Negative values for signed integer types (to validate zigzag encoding)
 4. Minimum (lowest) values
 5. Maximum values
+
+The values can be found in the reference file `types.fundamental.integer.json`.

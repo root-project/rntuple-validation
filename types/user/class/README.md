@@ -18,3 +18,5 @@ with the default column types.
 
 1. Simple values
 2. Zero / empty values
+
+The values can be found in the reference file `types.user.class.json`.

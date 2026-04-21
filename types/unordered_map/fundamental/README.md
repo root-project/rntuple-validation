@@ -13,3 +13,5 @@ All child fields use the default column types for `std::string` (`Index64` for t
 2. Empty maps
 3. Increasing number of elements in the map:
    one key-value pair in the first field, two key-value pairs in the second field, etc.
+
+The values can be found in the reference file `types.unordered_map.fundamental.json`.

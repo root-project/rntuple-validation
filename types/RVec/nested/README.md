@@ -12,3 +12,5 @@ All child fields use the default column encoding `Int32`.
 1. Single-element vectors, with ascending values
 2. Empty vectors
 3. Increasing number of elements in the outer vector, with arbitrary lengths of the inner vectors
+
+The values can be found in the reference file `types.RVec.nested.json`.

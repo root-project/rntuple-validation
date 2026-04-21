@@ -13,6 +13,8 @@ All child fields use the default column types for `std::string` (`Index64` for t
 2. Empty maps
 3. Increasing number of elements in the outer map, with arbitrary lengths of the inner maps
 
+The values can be found in the reference file `types.map.nested.json`.
+
 ## Dictionaries
 
 These tests require ROOT dictionaries, which can be generated with the provided `Makefile` in this directory. This will create a `libNestedMap` shared object.

@@ -10,3 +10,5 @@ with the default column types.
 
 1. Simple values
 2. Zero values
+
+The values can be found in the reference file `types.user.enum.json`.

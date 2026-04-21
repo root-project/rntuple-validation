@@ -19,3 +19,5 @@ with the corresponding field and column types.
 4. Smallest positive normal values
 5. Smallest positive subnormal values
 6. Maximum values
+
+The values can be found in the reference file `types.fundamental.real.json`.

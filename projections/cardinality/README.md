@@ -11,3 +11,5 @@
 2. Empty vectors
 3. Increasing number of elements in the vector:
    one element in the first field, two elements in the second field, etc.
+
+The values can be found in the reference file `projections.cardinality.json`.

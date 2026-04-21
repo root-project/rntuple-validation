@@ -13,3 +13,5 @@ with the default column types.
 1. Ascending bits set
 2. All bits set
 3. All bits unset
+
+The values can be found in the reference file `types.bitset.json`.
