@@ -1,11 +1,11 @@
-# `std::map<std::string, std::int32_t>`
+# `std::multimap<std::string, std::int32_t>`
 
 ## Fields
 
 - `[Split]Index{32,64}`
 
 with the corresponding column type for the offset column of the collection parent field.
-All child fields use the default column types for `std::string` (`SplitIndex64` for the principal column, `Char` for the second column) and `std::int32_t` (`SplitInt32`).
+All child fields use the default column types for `std::string` (`Index64` for the principal column, `Char` for the second column) and `std::int32_t` (`Int32`).
 
 ## Entries
 
