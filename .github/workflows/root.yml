@@ -11,16 +11,16 @@ jobs:
     container: rootproject/root:6.34.00-ubuntu24.04
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Execute ROOT macros
         run: make
       - name: Upload produced RNTuple ROOT files
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: RNTuple-ROOT
           path: "*.root"
       - name: Upload produced validation JSON files
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Validation-JSON
           path: "*.json"
