@@ -14,3 +14,5 @@ with the corresponding column types.
 
 1. Ascending values
 2. Zero values
+
+The values can be found in the reference file `types.atomic.json`.

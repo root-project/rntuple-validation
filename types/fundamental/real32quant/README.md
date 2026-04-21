@@ -19,3 +19,5 @@ and a value range of `[-1, 1]` unless noted otherwise.
 3. Middle values of the fields' value range
 4. Min values of the fields' value range
 5. Max values of the fields' value range
+
+The values can be found in the reference file `types.fundamental.real32trunc.json`.

@@ -2,6 +2,7 @@
 
 For the RNTuple Validation Suite, we assume that the structure is orthogonal to the supported types and serialized data.
 Therefore all tests in this category write a single `Int32` field with type `std::int32_t` the entries have ascending values.
+The values can be found in the reference files (`structure.*.json`).
 
  * [`clusters`](clusters): multiple clusters
  * [`cluster_groups`](cluster_groups): multiple cluster groups

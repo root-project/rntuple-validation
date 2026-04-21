@@ -13,3 +13,5 @@ All child fields use the default column encoding `Int32`.
 2. Empty sets
 3. Increasing number of elements in the set:
    one element in the first field, two elements in the second field, etc.
+
+The values can be found in the reference file `types.unordered_set.fundamental.json`.

@@ -13,6 +13,8 @@ All child fields use the default column encoding `Int32`.
 2. Empty sets
 3. Increasing number of elements in the outer set, with arbitrary lengths of the inner sets
 
+The values can be found in the reference file `types.multiset.nested.json`.
+
 ## Dictionaries
 
 These tests require ROOT dictionaries, which can be generated with the provided `Makefile` in this directory. This will create a `libNestedMultiset` shared object.

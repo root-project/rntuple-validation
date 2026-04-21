@@ -8,3 +8,5 @@
 ## Entries
 
 1. Ascending values
+
+The values can be found in the reference file `projections.leaf.json`.

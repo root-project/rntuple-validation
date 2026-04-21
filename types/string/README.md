@@ -13,3 +13,5 @@ with the corresponding column type for the first (principal) column.
 3. Unicode characters as UTF-8
 4. Increasing length of strings:
    one character in the first field, two characters in the second field, etc.
+
+The values can be found in the reference file `types.string.json`.
