@@ -4,6 +4,8 @@
 using ROOT::Experimental::REntry;
 using ROOT::Experimental::RNTupleReader;
 
+#include <TSystem.h>
+
 #include <cstdint>
 #include <fstream>
 #include <ostream>
