@@ -1,6 +1,5 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
-#include <ROOT/RNTupleUtil.hxx>
 
 #include <cstdint>
 #include <fstream>
