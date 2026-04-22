@@ -62,11 +62,4 @@ void write(std::string_view filename = "types.RVec.nested.root") {
   *SplitIndex32 = {{4}, {}, {5, 6}};
   *SplitIndex64 = {{}, {7, 8, 9}, {}, {10}};
   writer->Fill();
-
-  // Work around bug in 6.34 for destroying RVec's, later fixed by commit
-  // https://github.com/root-project/root/commit/996cac359d for 6.36.
-  Index32->clear();
-  Index64->clear();
-  SplitIndex32->clear();
-  SplitIndex64->clear();
 }
