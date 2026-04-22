@@ -1,9 +1,6 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::Experimental::REntry;
-using ROOT::Experimental::RNTupleReader;
-
 #include <TSystem.h>
 
 #include <cstdint>
@@ -16,8 +13,9 @@ using ROOT::Experimental::RNTupleReader;
 
 using Multiset = std::multiset<std::multiset<std::int32_t>>;
 
-static void PrintNestedMultisetValue(const REntry &entry, std::string_view name,
-                                     std::ostream &os, bool last = false) {
+static void PrintNestedMultisetValue(const ROOT::REntry &entry,
+                                     std::string_view name, std::ostream &os,
+                                     bool last = false) {
   Multiset &value = *entry.GetPtr<Multiset>(name);
   os << "    \"" << name << "\": [";
   bool outerFirst = true;
@@ -61,7 +59,7 @@ void read(std::string_view input = "types.multiset.nested.root",
   std::ofstream os(std::string{output});
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {

@@ -1,9 +1,6 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::Experimental::REntry;
-using ROOT::Experimental::RNTupleReader;
-
 #include <cstdint>
 #include <fstream>
 #include <ostream>
@@ -13,8 +10,8 @@ using ROOT::Experimental::RNTupleReader;
 
 using Multimap = std::multimap<std::string, std::int32_t>;
 
-static void PrintMultimapValue(const REntry &entry, std::string_view name,
-                          std::ostream &os, bool last = false) {
+static void PrintMultimapValue(const ROOT::REntry &entry, std::string_view name,
+                               std::ostream &os, bool last = false) {
   Multimap &item = *entry.GetPtr<Multimap>(name);
   os << "    \"" << name << "\": {";
   bool first = true;
@@ -41,7 +38,7 @@ void read(std::string_view input = "types.multimap.fundamental.root",
   std::ofstream os(std::string{output});
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {

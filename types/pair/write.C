@@ -2,10 +2,6 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::Experimental::RNTupleModel;
-using ROOT::Experimental::RNTupleWriteOptions;
-using ROOT::Experimental::RNTupleWriter;
-
 #include <cstdint>
 #include <memory>
 #include <string>
@@ -19,7 +15,7 @@ using Variant = std::variant<std::int32_t, std::string>;
 using VectorInt32 = std::vector<std::int32_t>;
 
 void write(std::string_view filename = "types.pair.root") {
-  auto model = RNTupleModel::Create();
+  auto model = ROOT::RNTupleModel::Create();
 
   auto Int32_String = model->MakeField<Pair_Int32_String>("Int32_String");
   auto Variant_Vector =
@@ -29,10 +25,10 @@ void write(std::string_view filename = "types.pair.root") {
   auto VectorPair =
       model->MakeField<std::vector<Pair_Int32_String>>("VectorPair");
 
-  RNTupleWriteOptions options;
+  ROOT::RNTupleWriteOptions options;
   options.SetCompression(0);
-  auto writer =
-      RNTupleWriter::Recreate(std::move(model), "ntpl", filename, options);
+  auto writer = ROOT::RNTupleWriter::Recreate(std::move(model), "ntpl",
+                                              filename, options);
 
   // First entry: simple values
   *Int32_String = {1, "abc"};

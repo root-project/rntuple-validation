@@ -1,9 +1,6 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::Experimental::REntry;
-using ROOT::Experimental::RNTupleReader;
-
 #include <cstdint>
 #include <fstream>
 #include <ostream>
@@ -13,7 +10,7 @@ using ROOT::Experimental::RNTupleReader;
 
 using UnorderedMultiSet = std::unordered_multiset<std::int32_t>;
 
-static void PrintUnorderedMultiSetValue(const REntry &entry,
+static void PrintUnorderedMultiSetValue(const ROOT::REntry &entry,
                                         std::string_view name, std::ostream &os,
                                         bool last = false) {
   UnorderedMultiSet &value = *entry.GetPtr<UnorderedMultiSet>(name);
@@ -47,7 +44,7 @@ void read(
   std::ofstream os(std::string{output});
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {

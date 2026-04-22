@@ -1,14 +1,12 @@
 #include <ROOT/RField.hxx>
 #include <ROOT/RNTupleModel.hxx>
+#if __has_include(<ROOT/RNTupleTypes.hxx>)
+#include <ROOT/RNTupleTypes.hxx>
+#else
 #include <ROOT/RNTupleUtil.hxx>
+#endif
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
-
-using ROOT::Experimental::EColumnType;
-using ROOT::Experimental::RField;
-using ROOT::Experimental::RNTupleModel;
-using ROOT::Experimental::RNTupleWriteOptions;
-using ROOT::Experimental::RNTupleWriter;
 
 #include <cstdint>
 #include <limits>
@@ -16,55 +14,55 @@ using ROOT::Experimental::RNTupleWriter;
 #include <string_view>
 
 template <typename T>
-static std::shared_ptr<T> MakeFundamentalField(RNTupleModel &model,
+static std::shared_ptr<T> MakeFundamentalField(ROOT::RNTupleModel &model,
                                                std::string_view name,
-                                               EColumnType type) {
-  auto field = std::make_unique<RField<T>>(name);
+                                               ROOT::ENTupleColumnType type) {
+  auto field = std::make_unique<ROOT::RField<T>>(name);
   field->SetColumnRepresentatives({{type}});
   model.AddField(std::move(field));
   return model.GetDefaultEntry().GetPtr<T>(name);
 }
 
 void write(std::string_view filename = "types.fundamental.integer.root") {
-  auto model = RNTupleModel::Create();
+  auto model = ROOT::RNTupleModel::Create();
 
-  auto Int8 =
-      MakeFundamentalField<std::int8_t>(*model, "Int8", EColumnType::kInt8);
-  auto UInt8 =
-      MakeFundamentalField<std::uint8_t>(*model, "UInt8", EColumnType::kUInt8);
+  auto Int8 = MakeFundamentalField<std::int8_t>(*model, "Int8",
+                                                ROOT::ENTupleColumnType::kInt8);
+  auto UInt8 = MakeFundamentalField<std::uint8_t>(
+      *model, "UInt8", ROOT::ENTupleColumnType::kUInt8);
 
   // Non-split integer encoding
-  auto Int16 =
-      MakeFundamentalField<std::int16_t>(*model, "Int16", EColumnType::kInt16);
-  auto UInt16 = MakeFundamentalField<std::uint16_t>(*model, "UInt16",
-                                                    EColumnType::kUInt16);
-  auto Int32 =
-      MakeFundamentalField<std::int32_t>(*model, "Int32", EColumnType::kInt32);
-  auto UInt32 = MakeFundamentalField<std::uint32_t>(*model, "UInt32",
-                                                    EColumnType::kUInt32);
-  auto Int64 =
-      MakeFundamentalField<std::int64_t>(*model, "Int64", EColumnType::kInt64);
-  auto UInt64 = MakeFundamentalField<std::uint64_t>(*model, "UInt64",
-                                                    EColumnType::kUInt64);
+  auto Int16 = MakeFundamentalField<std::int16_t>(
+      *model, "Int16", ROOT::ENTupleColumnType::kInt16);
+  auto UInt16 = MakeFundamentalField<std::uint16_t>(
+      *model, "UInt16", ROOT::ENTupleColumnType::kUInt16);
+  auto Int32 = MakeFundamentalField<std::int32_t>(
+      *model, "Int32", ROOT::ENTupleColumnType::kInt32);
+  auto UInt32 = MakeFundamentalField<std::uint32_t>(
+      *model, "UInt32", ROOT::ENTupleColumnType::kUInt32);
+  auto Int64 = MakeFundamentalField<std::int64_t>(
+      *model, "Int64", ROOT::ENTupleColumnType::kInt64);
+  auto UInt64 = MakeFundamentalField<std::uint64_t>(
+      *model, "UInt64", ROOT::ENTupleColumnType::kUInt64);
 
   // Split integer encoding
   auto SplitInt16 = MakeFundamentalField<std::int16_t>(
-      *model, "SplitInt16", EColumnType::kSplitInt16);
+      *model, "SplitInt16", ROOT::ENTupleColumnType::kSplitInt16);
   auto SplitUInt16 = MakeFundamentalField<std::uint16_t>(
-      *model, "SplitUInt16", EColumnType::kSplitUInt16);
+      *model, "SplitUInt16", ROOT::ENTupleColumnType::kSplitUInt16);
   auto SplitInt32 = MakeFundamentalField<std::int32_t>(
-      *model, "SplitInt32", EColumnType::kSplitInt32);
+      *model, "SplitInt32", ROOT::ENTupleColumnType::kSplitInt32);
   auto SplitUInt32 = MakeFundamentalField<std::uint32_t>(
-      *model, "SplitUInt32", EColumnType::kSplitUInt32);
+      *model, "SplitUInt32", ROOT::ENTupleColumnType::kSplitUInt32);
   auto SplitInt64 = MakeFundamentalField<std::int64_t>(
-      *model, "SplitInt64", EColumnType::kSplitInt64);
+      *model, "SplitInt64", ROOT::ENTupleColumnType::kSplitInt64);
   auto SplitUInt64 = MakeFundamentalField<std::uint64_t>(
-      *model, "SplitUInt64", EColumnType::kSplitUInt64);
+      *model, "SplitUInt64", ROOT::ENTupleColumnType::kSplitUInt64);
 
-  RNTupleWriteOptions options;
+  ROOT::RNTupleWriteOptions options;
   options.SetCompression(0);
-  auto writer =
-      RNTupleWriter::Recreate(std::move(model), "ntpl", filename, options);
+  auto writer = ROOT::RNTupleWriter::Recreate(std::move(model), "ntpl",
+                                              filename, options);
 
   // First entry: ascending values
   *Int8 = 1;

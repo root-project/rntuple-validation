@@ -1,9 +1,6 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::Experimental::REntry;
-using ROOT::Experimental::RNTupleReader;
-
 #include <TSystem.h>
 
 #include <cstdint>
@@ -51,7 +48,7 @@ static void PrintUserMembers(const User &value, std::ostream &os,
   os << indent << "}\n";
 }
 
-static void PrintUserValue(const REntry &entry, std::string_view name,
+static void PrintUserValue(const ROOT::REntry &entry, std::string_view name,
                            std::ostream &os, bool last = false) {
   auto &value = *entry.GetPtr<User>(name);
   os << "    \"" << name << "\": {\n";
@@ -63,7 +60,7 @@ static void PrintUserValue(const REntry &entry, std::string_view name,
   os << "\n";
 }
 
-static void PrintUserVector(const REntry &entry, std::string_view name,
+static void PrintUserVector(const ROOT::REntry &entry, std::string_view name,
                             std::ostream &os, bool last = false) {
   auto &vector = *entry.GetPtr<std::vector<User>>(name);
   os << "    \"" << name << "\": [";
@@ -97,7 +94,7 @@ void read(std::string_view input = "types.user.class.root",
   std::ofstream os(std::string{output});
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {

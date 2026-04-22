@@ -1,9 +1,6 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::Experimental::REntry;
-using ROOT::Experimental::RNTupleReader;
-
 #include <atomic>
 #include <cstddef> // for std::byte
 #include <cstdint>
@@ -13,7 +10,7 @@ using ROOT::Experimental::RNTupleReader;
 #include <string_view>
 
 template <typename T>
-static void PrintIntegerValue(const REntry &entry, std::string_view name,
+static void PrintIntegerValue(const ROOT::REntry &entry, std::string_view name,
                               std::ostream &os, bool last = false) {
   T value = *entry.GetPtr<std::atomic<T>>(name);
   os << "    \"" << name << "\": ";
@@ -27,7 +24,7 @@ static void PrintIntegerValue(const REntry &entry, std::string_view name,
 }
 
 template <typename T>
-static void PrintRealValue(const REntry &entry, std::string_view name,
+static void PrintRealValue(const ROOT::REntry &entry, std::string_view name,
                            std::ostream &os, bool last = false) {
   T value = *entry.GetPtr<std::atomic<T>>(name);
   os << "    \"" << name << "\": \"" << value << "\"";
@@ -44,7 +41,7 @@ void read(std::string_view input = "types.atomic.root",
   os << std::hexfloat;
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {

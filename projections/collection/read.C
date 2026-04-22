@@ -2,9 +2,6 @@
 #include <ROOT/RNTupleReader.hxx>
 #include <ROOT/RVec.hxx>
 
-using ROOT::Experimental::REntry;
-using ROOT::Experimental::RNTupleReader;
-
 #include <cstdint>
 #include <fstream>
 #include <ostream>
@@ -13,8 +10,9 @@ using ROOT::Experimental::RNTupleReader;
 #include <vector>
 
 template <typename C>
-static void PrintCollectionValue(const REntry &entry, std::string_view name,
-                                 std::ostream &os, bool last = false) {
+static void PrintCollectionValue(const ROOT::REntry &entry,
+                                 std::string_view name, std::ostream &os,
+                                 bool last = false) {
   C &value = *entry.GetPtr<C>(name);
   os << "    \"" << name << "\": [";
   bool first = true;
@@ -41,7 +39,7 @@ void read(std::string_view input = "projections.collection.root",
   std::ofstream os(std::string{output});
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {

@@ -2,9 +2,6 @@
 #include <ROOT/RError.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::Experimental::RException;
-using ROOT::Experimental::RNTupleReader;
-
 #include <cstdint>
 #include <fstream>
 #include <ostream>
@@ -14,10 +11,10 @@ using ROOT::Experimental::RNTupleReader;
 void read_structure(std::string_view input, std::string_view output) {
   std::ofstream os(std::string{output});
 
-  std::unique_ptr<RNTupleReader> reader;
+  std::unique_ptr<ROOT::RNTupleReader> reader;
   try {
-    reader = RNTupleReader::Open("ntpl", input);
-  } catch (const RException &e) {
+    reader = ROOT::RNTupleReader::Open("ntpl", input);
+  } catch (const ROOT::RException &e) {
     std::string msgWithoutStacktrace;
     std::getline(std::istringstream(e.what()), msgWithoutStacktrace);
     os << "{\n";

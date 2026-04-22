@@ -1,9 +1,6 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::Experimental::REntry;
-using ROOT::Experimental::RNTupleReader;
-
 #include <TSystem.h>
 
 #include <cstdint>
@@ -16,8 +13,9 @@ using ROOT::Experimental::RNTupleReader;
 
 using Map = std::map<std::string, std::map<std::string, std::int32_t>>;
 
-static void PrintNestedMapValue(const REntry &entry, std::string_view name,
-                                std::ostream &os, bool last = false) {
+static void PrintNestedMapValue(const ROOT::REntry &entry,
+                                std::string_view name, std::ostream &os,
+                                bool last = false) {
   Map &item = *entry.GetPtr<Map>(name);
   os << "    \"" << name << "\": {";
   bool outerFirst = true;
@@ -61,7 +59,7 @@ void read(std::string_view input = "types.map.nested.root",
   std::ofstream os(std::string{output});
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {

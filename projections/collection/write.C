@@ -4,11 +4,6 @@
 #include <ROOT/RNTupleWriter.hxx>
 #include <ROOT/RVec.hxx>
 
-using ROOT::Experimental::RField;
-using ROOT::Experimental::RNTupleModel;
-using ROOT::Experimental::RNTupleWriteOptions;
-using ROOT::Experimental::RNTupleWriter;
-
 #include <cstdint>
 #include <memory>
 #include <string>
@@ -16,11 +11,11 @@ using ROOT::Experimental::RNTupleWriter;
 #include <vector>
 
 void write(std::string_view filename = "projections.collection.root") {
-  auto model = RNTupleModel::Create();
+  auto model = ROOT::RNTupleModel::Create();
 
   auto Vector = model->MakeField<std::vector<std::int32_t>>("Vector");
   auto Projected =
-      std::make_unique<RField<ROOT::RVec<std::int32_t>>>("Projected");
+      std::make_unique<ROOT::RField<ROOT::RVec<std::int32_t>>>("Projected");
   model->AddProjectedField(std::move(Projected),
                            [](const std::string &fieldName) {
                              if (fieldName == "Projected") {
@@ -30,10 +25,10 @@ void write(std::string_view filename = "projections.collection.root") {
                              }
                            });
 
-  RNTupleWriteOptions options;
+  ROOT::RNTupleWriteOptions options;
   options.SetCompression(0);
-  auto writer =
-      RNTupleWriter::Recreate(std::move(model), "ntpl", filename, options);
+  auto writer = ROOT::RNTupleWriter::Recreate(std::move(model), "ntpl",
+                                              filename, options);
 
   // First entry: ascending values
   *Vector = {1, 2};

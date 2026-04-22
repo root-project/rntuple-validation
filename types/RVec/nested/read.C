@@ -2,9 +2,6 @@
 #include <ROOT/RNTupleReader.hxx>
 #include <ROOT/RVec.hxx>
 
-using ROOT::Experimental::REntry;
-using ROOT::Experimental::RNTupleReader;
-
 #include <cstdint>
 #include <fstream>
 #include <ostream>
@@ -13,8 +10,9 @@ using ROOT::Experimental::RNTupleReader;
 
 using Vector = ROOT::RVec<ROOT::RVec<std::int32_t>>;
 
-static void PrintNestedVectorValue(const REntry &entry, std::string_view name,
-                                   std::ostream &os, bool last = false) {
+static void PrintNestedVectorValue(const ROOT::REntry &entry,
+                                   std::string_view name, std::ostream &os,
+                                   bool last = false) {
   Vector &value = *entry.GetPtr<Vector>(name);
   os << "    \"" << name << "\": [";
   bool outerFirst = true;
@@ -54,7 +52,7 @@ void read(std::string_view input = "types.RVec.nested.root",
   std::ofstream os(std::string{output});
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {

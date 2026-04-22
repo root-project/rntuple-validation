@@ -1,9 +1,6 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::Experimental::REntry;
-using ROOT::Experimental::RNTupleReader;
-
 #include <cstdint>
 #include <fstream>
 #include <optional>
@@ -52,7 +49,7 @@ template <> void PrintValue(const VectorInt32Ty &value, std::ostream &os) {
 }
 
 template <typename T>
-static void PrintOptionalValue(const REntry &entry, std::string_view name,
+static void PrintOptionalValue(const ROOT::REntry &entry, std::string_view name,
                                std::ostream &os, bool last = false) {
   auto &value = *entry.GetPtr<std::optional<T>>(name);
   os << "    \"" << name << "\": ";
@@ -67,8 +64,9 @@ static void PrintOptionalValue(const REntry &entry, std::string_view name,
   os << "\n";
 }
 
-static void PrintVectorOptValue(const REntry &entry, std::string_view name,
-                                std::ostream &os, bool last = false) {
+static void PrintVectorOptValue(const ROOT::REntry &entry,
+                                std::string_view name, std::ostream &os,
+                                bool last = false) {
   auto &value = *entry.GetPtr<std::vector<std::optional<std::int32_t>>>(name);
   os << "    \"" << name << "\": [";
   bool first = true;
@@ -100,7 +98,7 @@ void read(std::string_view input = "types.optional.root",
   std::ofstream os(std::string{output});
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {

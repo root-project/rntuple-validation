@@ -1,32 +1,30 @@
 #include <ROOT/RField.hxx>
 #include <ROOT/RNTupleModel.hxx>
+#if __has_include(<ROOT/RNTupleTypes.hxx>)
+#include <ROOT/RNTupleTypes.hxx>
+#else
 #include <ROOT/RNTupleUtil.hxx>
+#endif
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
-
-using ROOT::Experimental::EColumnType;
-using ROOT::Experimental::RField;
-using ROOT::Experimental::RNTupleModel;
-using ROOT::Experimental::RNTupleWriteOptions;
-using ROOT::Experimental::RNTupleWriter;
 
 #include <limits>
 #include <memory>
 #include <string_view>
 
 template <typename T>
-static std::shared_ptr<T> MakeFieldReal32Trunc(RNTupleModel &model,
+static std::shared_ptr<T> MakeFieldReal32Trunc(ROOT::RNTupleModel &model,
                                                std::string_view name,
                                                int nBits) {
   assert(nBits >= 10 && nBits < 32);
-  auto field = std::make_unique<RField<T>>(name);
+  auto field = std::make_unique<ROOT::RField<T>>(name);
   field->SetTruncated(nBits);
   model.AddField(std::move(field));
   return model.GetDefaultEntry().GetPtr<T>(name);
 }
 
 void write(std::string_view filename = "types.fundamental.real32trunc.root") {
-  auto model = RNTupleModel::Create();
+  auto model = ROOT::RNTupleModel::Create();
 
   auto FloatReal32Trunc10 =
       MakeFieldReal32Trunc<float>(*model, "FloatReal32Trunc10", 10);
@@ -41,10 +39,10 @@ void write(std::string_view filename = "types.fundamental.real32trunc.root") {
   auto DoubleReal32Trunc31 =
       MakeFieldReal32Trunc<double>(*model, "DoubleReal32Trunc31", 31);
 
-  RNTupleWriteOptions options;
+  ROOT::RNTupleWriteOptions options;
   options.SetCompression(0);
-  auto writer =
-      RNTupleWriter::Recreate(std::move(model), "ntpl", filename, options);
+  auto writer = ROOT::RNTupleWriter::Recreate(std::move(model), "ntpl",
+                                              filename, options);
 
   // First entry: ascending values
   *FloatReal32Trunc10 = 1.0f;

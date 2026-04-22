@@ -1,9 +1,10 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
+#if __has_include(<ROOT/RNTupleTypes.hxx>)
+#include <ROOT/RNTupleTypes.hxx>
+#else
 #include <ROOT/RNTupleUtil.hxx>
-
-using ROOT::Experimental::REntry;
-using ROOT::Experimental::RNTupleReader;
+#endif
 
 #include <cstdint>
 #include <fstream>
@@ -14,7 +15,7 @@ using ROOT::Experimental::RNTupleReader;
 
 using Vector = std::vector<std::int32_t>;
 
-static void PrintVectorValue(const REntry &entry, std::string_view name,
+static void PrintVectorValue(const ROOT::REntry &entry, std::string_view name,
                              std::ostream &os, bool last = false) {
   Vector &value = *entry.GetPtr<Vector>(name);
   os << "    \"" << name << "\": [";
@@ -38,7 +39,7 @@ static void PrintVectorValue(const REntry &entry, std::string_view name,
 }
 
 template <typename T>
-static void PrintCardinality(const REntry &entry, std::string_view name,
+static void PrintCardinality(const ROOT::REntry &entry, std::string_view name,
                              std::ostream &os, bool last = false) {
   T value = *entry.GetPtr<ROOT::RNTupleCardinality<T>>(name);
   os << "    \"" << name << "\": " << value;
@@ -53,7 +54,7 @@ void read(std::string_view input = "projections.cardinality.root",
   std::ofstream os(std::string{output});
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {

@@ -1,9 +1,5 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
-#include <ROOT/RNTupleUtil.hxx>
-
-using ROOT::Experimental::REntry;
-using ROOT::Experimental::RNTupleReader;
 
 #include <cstdint>
 #include <fstream>
@@ -23,7 +19,7 @@ template <> void PrintValue(const float &value, std::ostream &os) {
 }
 
 template <typename T, typename U>
-static void PrintPairValue(const REntry &entry, std::string_view name,
+static void PrintPairValue(const ROOT::REntry &entry, std::string_view name,
                            std::ostream &os, bool last = false) {
   auto &value = *entry.GetPtr<std::pair<T, U>>(name);
   os << "    \"" << name << "\": [\n";
@@ -41,7 +37,7 @@ static void PrintPairValue(const REntry &entry, std::string_view name,
 }
 
 template <typename T>
-static void PrintValue(const REntry &entry, std::string_view name,
+static void PrintValue(const ROOT::REntry &entry, std::string_view name,
                        std::ostream &os, bool last = false) {
   T value = *entry.GetPtr<T>(name);
   os << "    \"" << name << "\": ";
@@ -59,7 +55,7 @@ void read(std::string_view input = "projections.leaf.root",
   os << std::hexfloat;
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {

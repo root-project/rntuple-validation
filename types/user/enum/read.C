@@ -1,9 +1,6 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::Experimental::REntry;
-using ROOT::Experimental::RNTupleReader;
-
 #include <TSystem.h>
 
 #include <cstdint>
@@ -16,7 +13,7 @@ using ROOT::Experimental::RNTupleReader;
 #include "UserEnum.hxx"
 
 template <typename T>
-static void PrintEnumValue(const REntry &entry, std::string_view name,
+static void PrintEnumValue(const ROOT::REntry &entry, std::string_view name,
                            std::ostream &os, bool last = false) {
   T value = *entry.GetPtr<T>(name);
   os << "    \"" << name << "\": ";
@@ -38,7 +35,7 @@ void read(std::string_view input = "types.user.enum.root",
   std::ofstream os(std::string{output});
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {

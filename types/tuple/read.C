@@ -1,9 +1,6 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::Experimental::REntry;
-using ROOT::Experimental::RNTupleReader;
-
 #include <cstdint>
 #include <fstream>
 #include <ostream>
@@ -50,7 +47,7 @@ template <> void PrintValue(const Tuple_Int32_String &value, std::ostream &os) {
   os << "      ]";
 }
 
-static void PrintTupleValue(const REntry &entry, std::string_view name,
+static void PrintTupleValue(const ROOT::REntry &entry, std::string_view name,
                             std::ostream &os, bool last = false) {
   auto &value =
       *entry.GetPtr<std::tuple<std::int32_t, std::string, VectorInt32>>(name);
@@ -71,7 +68,7 @@ static void PrintTupleValue(const REntry &entry, std::string_view name,
   os << "\n";
 }
 
-static void PrintVariantValue(const REntry &entry, std::string_view name,
+static void PrintVariantValue(const ROOT::REntry &entry, std::string_view name,
                               std::ostream &os, bool last = false) {
   auto &value =
       *entry.GetPtr<std::tuple<std::variant<std::int32_t, std::string>>>(name);
@@ -91,7 +88,7 @@ static void PrintVariantValue(const REntry &entry, std::string_view name,
   os << "\n";
 }
 
-static void PrintNestedValue(const REntry &entry, std::string_view name,
+static void PrintNestedValue(const ROOT::REntry &entry, std::string_view name,
                              std::ostream &os, bool last = false) {
   auto &value = *entry.GetPtr<std::tuple<Tuple_Int32_String>>(name);
   os << "    \"" << name << "\": [\n";
@@ -105,8 +102,9 @@ static void PrintNestedValue(const REntry &entry, std::string_view name,
   os << "\n";
 }
 
-static void PrintVectorTupleValue(const REntry &entry, std::string_view name,
-                                  std::ostream &os, bool last = false) {
+static void PrintVectorTupleValue(const ROOT::REntry &entry,
+                                  std::string_view name, std::ostream &os,
+                                  bool last = false) {
   auto &value = *entry.GetPtr<std::vector<Tuple_Int32_String>>(name);
   os << "    \"" << name << "\": [";
   bool first = true;
@@ -134,7 +132,7 @@ void read(std::string_view input = "types.tuple.root",
   std::ofstream os(std::string{output});
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {
