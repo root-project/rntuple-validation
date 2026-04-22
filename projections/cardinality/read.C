@@ -1,6 +1,10 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
+#if __has_include(<ROOT/RNTupleTypes.hxx>)
+#include <ROOT/RNTupleTypes.hxx>
+#else
 #include <ROOT/RNTupleUtil.hxx>
+#endif
 
 #include <cstdint>
 #include <fstream>
