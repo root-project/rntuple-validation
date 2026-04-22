@@ -4,12 +4,6 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::ENTupleColumnType;
-using ROOT::RField;
-using ROOT::RNTupleModel;
-using ROOT::RNTupleWriteOptions;
-using ROOT::RNTupleWriter;
-
 #include <cstdint>
 #include <memory>
 #include <string>
@@ -18,37 +12,40 @@ using ROOT::RNTupleWriter;
 
 using Vector = std::vector<std::int32_t>;
 
-static std::shared_ptr<Vector> MakeVectorField(RNTupleModel &model,
-                                               std::string_view name,
-                                               ENTupleColumnType indexType) {
-  auto field = std::make_unique<RField<Vector>>(name);
+static std::shared_ptr<Vector>
+MakeVectorField(ROOT::RNTupleModel &model, std::string_view name,
+                ROOT::ENTupleColumnType indexType) {
+  auto field = std::make_unique<ROOT::RField<Vector>>(name);
   field->SetColumnRepresentatives({{indexType}});
   model.AddField(std::move(field));
   return model.GetDefaultEntry().GetPtr<Vector>(name);
 }
 
 template <typename T>
-static void AddProjectedCardinalityField(RNTupleModel &model,
+static void AddProjectedCardinalityField(ROOT::RNTupleModel &model,
                                          std::string_view name,
                                          std::string_view source) {
-  auto field = std::make_unique<RField<ROOT::RNTupleCardinality<T>>>(name);
+  auto field =
+      std::make_unique<ROOT::RField<ROOT::RNTupleCardinality<T>>>(name);
   model.AddProjectedField(std::move(field), [&source](const std::string &) {
     return std::string{source};
   });
 }
 
 void write(std::string_view filename = "projections.cardinality.root") {
-  auto model = RNTupleModel::Create();
+  auto model = ROOT::RNTupleModel::Create();
 
   // Non-split index encoding
-  auto Index32 = MakeVectorField(*model, "Index32", ENTupleColumnType::kIndex32);
-  auto Index64 = MakeVectorField(*model, "Index64", ENTupleColumnType::kIndex64);
+  auto Index32 =
+      MakeVectorField(*model, "Index32", ROOT::ENTupleColumnType::kIndex32);
+  auto Index64 =
+      MakeVectorField(*model, "Index64", ROOT::ENTupleColumnType::kIndex64);
 
   // Split index encoding
-  auto SplitIndex32 =
-      MakeVectorField(*model, "SplitIndex32", ENTupleColumnType::kSplitIndex32);
-  auto SplitIndex64 =
-      MakeVectorField(*model, "SplitIndex64", ENTupleColumnType::kSplitIndex64);
+  auto SplitIndex32 = MakeVectorField(*model, "SplitIndex32",
+                                      ROOT::ENTupleColumnType::kSplitIndex32);
+  auto SplitIndex64 = MakeVectorField(*model, "SplitIndex64",
+                                      ROOT::ENTupleColumnType::kSplitIndex64);
 
   // Create RNTupleCardinality projections
   AddProjectedCardinalityField<std::uint32_t>(*model, "Index32Cardinality",
@@ -60,10 +57,10 @@ void write(std::string_view filename = "projections.cardinality.root") {
   AddProjectedCardinalityField<std::uint64_t>(*model, "SplitIndex64Cardinality",
                                               "SplitIndex64");
 
-  RNTupleWriteOptions options;
+  ROOT::RNTupleWriteOptions options;
   options.SetCompression(0);
-  auto writer =
-      RNTupleWriter::Recreate(std::move(model), "ntpl", filename, options);
+  auto writer = ROOT::RNTupleWriter::Recreate(std::move(model), "ntpl",
+                                              filename, options);
 
   // First entry: single-element vectors, with ascending values
   *Index32 = {1};

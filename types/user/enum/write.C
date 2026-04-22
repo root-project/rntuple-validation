@@ -2,10 +2,6 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::RNTupleModel;
-using ROOT::RNTupleWriteOptions;
-using ROOT::RNTupleWriter;
-
 #include <TSystem.h>
 
 #include <string_view>
@@ -17,7 +13,7 @@ void write(std::string_view filename = "types.user.enum.root") {
     throw std::runtime_error("could not find the required ROOT dictionaries, "
                              "please make sure to run `make` first");
 
-  auto model = RNTupleModel::Create();
+  auto model = ROOT::RNTupleModel::Create();
 
   // TODO: enums with bool underlying type are possible since ROOT 6.38
   auto EInt8 = model->MakeField<EnumInt8>("EnumInt8");
@@ -29,10 +25,10 @@ void write(std::string_view filename = "types.user.enum.root") {
   auto EInt64 = model->MakeField<EnumInt64>("EnumInt64");
   auto EUInt64 = model->MakeField<EnumUInt64>("EnumUInt64");
 
-  RNTupleWriteOptions options;
+  ROOT::RNTupleWriteOptions options;
   options.SetCompression(0);
-  auto writer =
-      RNTupleWriter::Recreate(std::move(model), "ntpl", filename, options);
+  auto writer = ROOT::RNTupleWriter::Recreate(std::move(model), "ntpl",
+                                              filename, options);
 
   // First entry: simple values
   *EInt8 = EnumInt8::Simple;     // = 1;

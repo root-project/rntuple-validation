@@ -2,25 +2,21 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::RNTupleModel;
-using ROOT::RNTupleWriteOptions;
-using ROOT::RNTupleWriter;
-
 #include <bitset>
 #include <memory>
 #include <string_view>
 
 void write(std::string_view filename = "types.bitset.root") {
-  auto model = RNTupleModel::Create();
+  auto model = ROOT::RNTupleModel::Create();
 
   auto Bitset1 = model->MakeField<std::bitset<1>>("Bitset1");
   auto Bitset64 = model->MakeField<std::bitset<64>>("Bitset64");
   auto Bitset65 = model->MakeField<std::bitset<65>>("Bitset65");
 
-  RNTupleWriteOptions options;
+  ROOT::RNTupleWriteOptions options;
   options.SetCompression(0);
-  auto writer =
-      RNTupleWriter::Recreate(std::move(model), "ntpl", filename, options);
+  auto writer = ROOT::RNTupleWriter::Recreate(std::move(model), "ntpl",
+                                              filename, options);
 
   // First entry: ascending bits set
   Bitset1->set(0);

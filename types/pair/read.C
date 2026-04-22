@@ -1,9 +1,6 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::REntry;
-using ROOT::RNTupleReader;
-
 #include <cstdint>
 #include <fstream>
 #include <ostream>
@@ -60,7 +57,7 @@ template <> void PrintValue(const Pair_Int32_String &value, std::ostream &os) {
 }
 
 template <typename T, typename U>
-static void PrintPairValue(const REntry &entry, std::string_view name,
+static void PrintPairValue(const ROOT::REntry &entry, std::string_view name,
                            std::ostream &os, bool last = false) {
   auto &value = *entry.GetPtr<std::pair<T, U>>(name);
   os << "    \"" << name << "\": [\n";
@@ -77,8 +74,9 @@ static void PrintPairValue(const REntry &entry, std::string_view name,
   os << "\n";
 }
 
-static void PrintVectorPairValue(const REntry &entry, std::string_view name,
-                                 std::ostream &os, bool last = false) {
+static void PrintVectorPairValue(const ROOT::REntry &entry,
+                                 std::string_view name, std::ostream &os,
+                                 bool last = false) {
   auto &value = *entry.GetPtr<std::vector<Pair_Int32_String>>(name);
   os << "    \"" << name << "\": [";
   bool first = true;
@@ -106,7 +104,7 @@ void read(std::string_view input = "types.pair.root",
   std::ofstream os(std::string{output});
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {

@@ -3,26 +3,21 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::ENTupleColumnType;
-using ROOT::RNTupleModel;
-using ROOT::RNTupleWriteOptions;
-using ROOT::RNTupleWriter;
-
 #include <cstdint>
 #include <memory>
 #include <string_view>
 
 void write(std::string_view filename = "compression.block.short.root") {
-  auto model = RNTupleModel::Create();
+  auto model = ROOT::RNTupleModel::Create();
 
   auto Int64 = model->MakeField<std::int64_t>("Int64");
   model->GetMutableField("Int64").SetColumnRepresentatives(
-      {{ENTupleColumnType::kSplitInt64}});
+      {{ROOT::ENTupleColumnType::kSplitInt64}});
 
-  RNTupleWriteOptions options;
+  ROOT::RNTupleWriteOptions options;
   options.SetCompression(505);
-  auto writer =
-      RNTupleWriter::Recreate(std::move(model), "ntpl", filename, options);
+  auto writer = ROOT::RNTupleWriter::Recreate(std::move(model), "ntpl",
+                                              filename, options);
 
   // Write only 2 entries to make sure the compression block is small and
   // actually stored uncompressed.

@@ -1,9 +1,6 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::REntry;
-using ROOT::RNTupleReader;
-
 #include <bitset>
 #include <cstddef>
 #include <fstream>
@@ -12,7 +9,7 @@ using ROOT::RNTupleReader;
 #include <string_view>
 
 template <std::size_t N>
-static void PrintBitsetValue(const REntry &entry, std::string_view name,
+static void PrintBitsetValue(const ROOT::REntry &entry, std::string_view name,
                              std::ostream &os, bool last = false) {
   auto &value = *entry.GetPtr<std::bitset<N>>(name);
   os << "    \"" << name << "\": \"" << value.to_string() << "\"";
@@ -27,7 +24,7 @@ void read(std::string_view input = "types.bitset.root",
   std::ofstream os(std::string{output});
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {

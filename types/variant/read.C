@@ -1,9 +1,6 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::REntry;
-using ROOT::RNTupleReader;
-
 #include <cstdint>
 #include <fstream>
 #include <ostream>
@@ -16,7 +13,7 @@ using VectorInt32 = std::vector<std::int32_t>;
 using Variant = std::variant<std::int32_t, std::string, VectorInt32>;
 using Vector = std::vector<std::variant<std::int32_t, std::string>>;
 
-static void PrintVariantValue(const REntry &entry, std::string_view name,
+static void PrintVariantValue(const ROOT::REntry &entry, std::string_view name,
                               std::ostream &os, bool last = false) {
   Variant &value = *entry.GetPtr<Variant>(name);
   os << "    \"" << name << "\": ";
@@ -48,7 +45,7 @@ static void PrintVariantValue(const REntry &entry, std::string_view name,
   os << "\n";
 }
 
-static void PrintVectorValue(const REntry &entry, std::string_view name,
+static void PrintVectorValue(const ROOT::REntry &entry, std::string_view name,
                              std::ostream &os, bool last = false) {
   Vector &value = *entry.GetPtr<Vector>(name);
   os << "    \"" << name << "\": [";
@@ -82,7 +79,7 @@ void read(std::string_view input = "types.variant.root",
   std::ofstream os(std::string{output});
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {

@@ -4,39 +4,35 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::ENTupleColumnType;
-using ROOT::RField;
-using ROOT::RNTupleModel;
-using ROOT::RNTupleWriteOptions;
-using ROOT::RNTupleWriter;
-
 #include <cstddef> // for std::byte
 #include <limits>
 #include <memory>
 #include <string_view>
 
 template <typename T>
-static std::shared_ptr<T> MakeFundamentalField(RNTupleModel &model,
+static std::shared_ptr<T> MakeFundamentalField(ROOT::RNTupleModel &model,
                                                std::string_view name,
-                                               ENTupleColumnType type) {
-  auto field = std::make_unique<RField<T>>(name);
+                                               ROOT::ENTupleColumnType type) {
+  auto field = std::make_unique<ROOT::RField<T>>(name);
   field->SetColumnRepresentatives({{type}});
   model.AddField(std::move(field));
   return model.GetDefaultEntry().GetPtr<T>(name);
 }
 
 void write(std::string_view filename = "types.fundamental.misc.root") {
-  auto model = RNTupleModel::Create();
+  auto model = ROOT::RNTupleModel::Create();
 
-  auto Bit = MakeFundamentalField<bool>(*model, "Bit", ENTupleColumnType::kBit);
-  auto Byte =
-      MakeFundamentalField<std::byte>(*model, "Byte", ENTupleColumnType::kByte);
-  auto Char = MakeFundamentalField<char>(*model, "Char", ENTupleColumnType::kChar);
+  auto Bit =
+      MakeFundamentalField<bool>(*model, "Bit", ROOT::ENTupleColumnType::kBit);
+  auto Byte = MakeFundamentalField<std::byte>(*model, "Byte",
+                                              ROOT::ENTupleColumnType::kByte);
+  auto Char = MakeFundamentalField<char>(*model, "Char",
+                                         ROOT::ENTupleColumnType::kChar);
 
-  RNTupleWriteOptions options;
+  ROOT::RNTupleWriteOptions options;
   options.SetCompression(0);
-  auto writer =
-      RNTupleWriter::Recreate(std::move(model), "ntpl", filename, options);
+  auto writer = ROOT::RNTupleWriter::Recreate(std::move(model), "ntpl",
+                                              filename, options);
 
   // First entry: ascending values
   *Bit = 1;

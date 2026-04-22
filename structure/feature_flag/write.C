@@ -8,9 +8,6 @@
 #include <string_view>
 #include <utility>
 
-using ROOT::RFieldZero;
-using ROOT::RNTupleDescriptor;
-using ROOT::RNTupleWriteOptions;
 using ROOT::Internal::RFieldDescriptorBuilder;
 using ROOT::Internal::RNTupleDescriptorBuilder;
 using ROOT::Internal::RNTupleFileWriter;
@@ -25,14 +22,14 @@ void write(std::string_view filename = "structure.feature_flag.root") {
   // The following line will be required as of ROOT v6.36
   // descBuilder.SetVersionForWriting();
   descBuilder.SetNTuple("ntpl", "");
-  descBuilder.SetFeature(RNTupleDescriptor::kFeatureFlagTest);
-  descBuilder.AddField(RFieldDescriptorBuilder::FromField(RFieldZero())
+  descBuilder.SetFeature(ROOT::RNTupleDescriptor::kFeatureFlagTest);
+  descBuilder.AddField(RFieldDescriptorBuilder::FromField(ROOT::RFieldZero())
                            .FieldId(0)
                            .MakeDescriptor()
                            .Unwrap());
   auto descriptor = descBuilder.MoveDescriptor();
 
-  RNTupleWriteOptions options;
+  ROOT::RNTupleWriteOptions options;
   options.SetCompression(0);
   auto writer = RNTupleFileWriter::Recreate(
       "ntpl", filename, RNTupleFileWriter::EContainerFormat::kTFile,

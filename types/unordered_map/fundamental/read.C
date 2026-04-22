@@ -1,9 +1,6 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::REntry;
-using ROOT::RNTupleReader;
-
 #include <cstdint>
 #include <fstream>
 #include <ostream>
@@ -13,7 +10,7 @@ using ROOT::RNTupleReader;
 
 using UnorderedMap = std::unordered_map<std::string, std::int32_t>;
 
-static void PrintMapValue(const REntry &entry, std::string_view name,
+static void PrintMapValue(const ROOT::REntry &entry, std::string_view name,
                           std::ostream &os, bool last = false) {
   UnorderedMap &item = *entry.GetPtr<UnorderedMap>(name);
 
@@ -45,7 +42,7 @@ void read(std::string_view input = "types.unordered_map.fundamental.root",
   std::ofstream os(std::string{output});
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {

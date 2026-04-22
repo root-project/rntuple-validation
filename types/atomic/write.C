@@ -2,10 +2,6 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::RNTupleModel;
-using ROOT::RNTupleWriteOptions;
-using ROOT::RNTupleWriter;
-
 #include <atomic>
 #include <cstddef> // for std::byte
 #include <cstdint>
@@ -13,13 +9,13 @@ using ROOT::RNTupleWriter;
 #include <string_view>
 
 template <typename T>
-static std::shared_ptr<std::atomic<T>> MakeAtomicField(RNTupleModel &model,
-                                                       std::string_view name) {
+static std::shared_ptr<std::atomic<T>>
+MakeAtomicField(ROOT::RNTupleModel &model, std::string_view name) {
   return model.MakeField<std::atomic<T>>(name);
 }
 
 void write(std::string_view filename = "types.atomic.root") {
-  auto model = RNTupleModel::Create();
+  auto model = ROOT::RNTupleModel::Create();
 
   auto Bit = MakeAtomicField<bool>(*model, "Bit");
   auto Byte = MakeAtomicField<std::byte>(*model, "Byte");
@@ -37,10 +33,10 @@ void write(std::string_view filename = "types.atomic.root") {
   auto Real32 = MakeAtomicField<float>(*model, "Real32");
   auto Real64 = MakeAtomicField<double>(*model, "Real64");
 
-  RNTupleWriteOptions options;
+  ROOT::RNTupleWriteOptions options;
   options.SetCompression(0);
-  auto writer =
-      RNTupleWriter::Recreate(std::move(model), "ntpl", filename, options);
+  auto writer = ROOT::RNTupleWriter::Recreate(std::move(model), "ntpl",
+                                              filename, options);
 
   // First entry: ascending values
   *Bit = 1;

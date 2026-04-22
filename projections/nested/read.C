@@ -2,9 +2,6 @@
 #include <ROOT/RNTupleReader.hxx>
 #include <ROOT/RVec.hxx>
 
-using ROOT::REntry;
-using ROOT::RNTupleReader;
-
 #include <cstdint>
 #include <fstream>
 #include <ostream>
@@ -36,7 +33,7 @@ void PrintValue(const std::pair<std::int32_t, float> &value, std::ostream &os) {
 }
 
 template <typename T>
-static void PrintVectorValue(const REntry &entry, std::string_view name,
+static void PrintVectorValue(const ROOT::REntry &entry, std::string_view name,
                              std::ostream &os, bool last = false) {
   auto &value = *entry.GetPtr<std::vector<T>>(name);
   os << "    \"" << name << "\": [";
@@ -67,7 +64,7 @@ void read(std::string_view input = "projections.nested.root",
   os << std::hexfloat;
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {
