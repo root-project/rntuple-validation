@@ -4,12 +4,6 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::ENTupleColumnType;
-using ROOT::RField;
-using ROOT::RNTupleModel;
-using ROOT::RNTupleWriteOptions;
-using ROOT::RNTupleWriter;
-
 #include <cstdint>
 #include <memory>
 #include <string_view>
@@ -17,32 +11,34 @@ using ROOT::RNTupleWriter;
 
 using UnorderedMap = std::unordered_map<std::string, std::int32_t>;
 
-static std::shared_ptr<UnorderedMap> MakeMapField(RNTupleModel &model,
-                                                  std::string_view name,
-                                                  ENTupleColumnType indexType) {
-  auto field = std::make_unique<RField<UnorderedMap>>(name);
+static std::shared_ptr<UnorderedMap>
+MakeMapField(ROOT::RNTupleModel &model, std::string_view name,
+             ROOT::ENTupleColumnType indexType) {
+  auto field = std::make_unique<ROOT::RField<UnorderedMap>>(name);
   field->SetColumnRepresentatives({{indexType}});
   model.AddField(std::move(field));
   return model.GetDefaultEntry().GetPtr<UnorderedMap>(name);
 }
 
 void write(std::string_view filename = "types.unordered_map.fundamental.root") {
-  auto model = RNTupleModel::Create();
+  auto model = ROOT::RNTupleModel::Create();
 
   // Non-split index encoding
-  auto Index32 = MakeMapField(*model, "Index32", ENTupleColumnType::kIndex32);
-  auto Index64 = MakeMapField(*model, "Index64", ENTupleColumnType::kIndex64);
+  auto Index32 =
+      MakeMapField(*model, "Index32", ROOT::ENTupleColumnType::kIndex32);
+  auto Index64 =
+      MakeMapField(*model, "Index64", ROOT::ENTupleColumnType::kIndex64);
 
   // Split index encoding
-  auto SplitIndex32 =
-      MakeMapField(*model, "SplitIndex32", ENTupleColumnType::kSplitIndex32);
-  auto SplitIndex64 =
-      MakeMapField(*model, "SplitIndex64", ENTupleColumnType::kSplitIndex64);
+  auto SplitIndex32 = MakeMapField(*model, "SplitIndex32",
+                                   ROOT::ENTupleColumnType::kSplitIndex32);
+  auto SplitIndex64 = MakeMapField(*model, "SplitIndex64",
+                                   ROOT::ENTupleColumnType::kSplitIndex64);
 
-  RNTupleWriteOptions options;
+  ROOT::RNTupleWriteOptions options;
   options.SetCompression(0);
-  auto writer =
-      RNTupleWriter::Recreate(std::move(model), "ntpl", filename, options);
+  auto writer = ROOT::RNTupleWriter::Recreate(std::move(model), "ntpl",
+                                              filename, options);
 
   // First entry: single-element maps, with ascending values
   *Index32 = {{"a", 1}};

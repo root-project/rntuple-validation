@@ -2,10 +2,6 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::RNTupleModel;
-using ROOT::RNTupleWriteOptions;
-using ROOT::RNTupleWriter;
-
 #include <array>
 #include <cstdint>
 #include <memory>
@@ -20,7 +16,7 @@ using Variant = std::variant<std::int32_t, std::string>;
 using VectorInt32 = std::vector<std::int32_t>;
 
 void write(std::string_view filename = "types.array.root") {
-  auto model = RNTupleModel::Create();
+  auto model = ROOT::RNTupleModel::Create();
 
   auto Array_Int32 = model->MakeField<ArrayInt32>("Array_Int32");
   auto Array_Array = model->MakeField<std::array<ArrayInt32, 3>>("Array_Array");
@@ -31,10 +27,10 @@ void write(std::string_view filename = "types.array.root") {
   auto Array_Vector =
       model->MakeField<std::array<VectorInt32, 2>>("Array_Vector");
 
-  RNTupleWriteOptions options;
+  ROOT::RNTupleWriteOptions options;
   options.SetCompression(0);
-  auto writer =
-      RNTupleWriter::Recreate(std::move(model), "ntpl", filename, options);
+  auto writer = ROOT::RNTupleWriter::Recreate(std::move(model), "ntpl",
+                                              filename, options);
 
   // First entry: simple values
   *Array_Int32 = {1, 2};

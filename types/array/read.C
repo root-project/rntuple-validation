@@ -1,9 +1,6 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::REntry;
-using ROOT::RNTupleReader;
-
 #include <array>
 #include <cstdint>
 #include <fstream>
@@ -54,7 +51,7 @@ template <> void PrintValue(const VectorInt32 &value, std::ostream &os) {
 }
 
 template <typename T>
-static void PrintArrayValue(const REntry &entry, std::string_view name,
+static void PrintArrayValue(const ROOT::REntry &entry, std::string_view name,
                             std::ostream &os, bool last = false) {
   auto &value = *entry.GetPtr<std::array<T, 2>>(name);
   os << "    \"" << name << "\": [";
@@ -76,8 +73,9 @@ static void PrintArrayValue(const REntry &entry, std::string_view name,
   os << "\n";
 }
 
-static void PrintArrayArrayValue(const REntry &entry, std::string_view name,
-                                 std::ostream &os, bool last = false) {
+static void PrintArrayArrayValue(const ROOT::REntry &entry,
+                                 std::string_view name, std::ostream &os,
+                                 bool last = false) {
   auto &value = *entry.GetPtr<std::array<std::array<std::int32_t, 2>, 3>>(name);
   os << "    \"" << name << "\": [";
   bool first = true;
@@ -112,7 +110,7 @@ void read(std::string_view input = "types.array.root",
   std::ofstream os(std::string{output});
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {

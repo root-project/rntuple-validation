@@ -1,9 +1,6 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::REntry;
-using ROOT::RNTupleReader;
-
 #include <cstdint>
 #include <fstream>
 #include <ostream>
@@ -11,7 +8,7 @@ using ROOT::RNTupleReader;
 #include <string_view>
 
 void read_compression(std::string_view input, std::string_view output) {
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto Int64 =
       reader->GetModel().GetDefaultEntry().GetPtr<std::int64_t>("Int64");
   std::int64_t sum = 0;

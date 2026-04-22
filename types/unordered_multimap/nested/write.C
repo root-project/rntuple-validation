@@ -4,12 +4,6 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::ENTupleColumnType;
-using ROOT::RField;
-using ROOT::RNTupleModel;
-using ROOT::RNTupleWriteOptions;
-using ROOT::RNTupleWriter;
-
 #include <TSystem.h>
 
 #include <cstdint>
@@ -21,10 +15,10 @@ using ROOT::RNTupleWriter;
 using UnorderedMultimap = std::unordered_multimap<std::string,
                                std::unordered_multimap<std::string, std::int32_t>>;
 
-static std::shared_ptr<UnorderedMultimap> MakeUnorderedMultimapField(RNTupleModel &model,
-                                         std::string_view name,
-                                         ENTupleColumnType indexType) {
-  auto field = std::make_unique<RField<UnorderedMultimap>>(name);
+static std::shared_ptr<UnorderedMultimap>
+MakeUnorderedMultimapField(ROOT::RNTupleModel &model, std::string_view name,
+                           ROOT::ENTupleColumnType indexType) {
+  auto field = std::make_unique<ROOT::RField<UnorderedMultimap>>(name);
   field->SetColumnRepresentatives({{indexType}});
   field->GetMutableSubfields()[0]
       ->GetMutableSubfields()[1]
@@ -38,22 +32,24 @@ void write(std::string_view filename = "types.unordered_multimap.nested.root") {
     throw std::runtime_error("could not find the required ROOT dictionaries, "
                              "please make sure to run `make` first");
 
-  auto model = RNTupleModel::Create();
+  auto model = ROOT::RNTupleModel::Create();
 
   // Non-split index encoding
-  auto Index32 = MakeUnorderedMultimapField(*model, "Index32", ENTupleColumnType::kIndex32);
-  auto Index64 = MakeUnorderedMultimapField(*model, "Index64", ENTupleColumnType::kIndex64);
+  auto Index32 = MakeUnorderedMultimapField(*model, "Index32",
+                                            ROOT::ENTupleColumnType::kIndex32);
+  auto Index64 = MakeUnorderedMultimapField(*model, "Index64",
+                                            ROOT::ENTupleColumnType::kIndex64);
 
   // Split index encoding
-  auto SplitIndex32 =
-      MakeUnorderedMultimapField(*model, "SplitIndex32", ENTupleColumnType::kSplitIndex32);
-  auto SplitIndex64 =
-      MakeUnorderedMultimapField(*model, "SplitIndex64", ENTupleColumnType::kSplitIndex64);
+  auto SplitIndex32 = MakeUnorderedMultimapField(
+      *model, "SplitIndex32", ROOT::ENTupleColumnType::kSplitIndex32);
+  auto SplitIndex64 = MakeUnorderedMultimapField(
+      *model, "SplitIndex64", ROOT::ENTupleColumnType::kSplitIndex64);
 
-  RNTupleWriteOptions options;
+  ROOT::RNTupleWriteOptions options;
   options.SetCompression(0);
-  auto writer =
-      RNTupleWriter::Recreate(std::move(model), "ntpl", filename, options);
+  auto writer = ROOT::RNTupleWriter::Recreate(std::move(model), "ntpl",
+                                              filename, options);
 
   // First entry: single-element maps, with ascending values
   *Index32 = {{"a", {{"aa", 1}}}};

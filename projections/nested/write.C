@@ -4,11 +4,6 @@
 #include <ROOT/RNTupleWriter.hxx>
 #include <ROOT/RVec.hxx>
 
-using ROOT::RField;
-using ROOT::RNTupleModel;
-using ROOT::RNTupleWriteOptions;
-using ROOT::RNTupleWriter;
-
 #include <cstdint>
 #include <memory>
 #include <string>
@@ -17,9 +12,9 @@ using ROOT::RNTupleWriter;
 #include <vector>
 
 template <typename T>
-static void AddProjectedField(RNTupleModel &model, std::string_view name,
+static void AddProjectedField(ROOT::RNTupleModel &model, std::string_view name,
                               std::string_view source) {
-  auto field = std::make_unique<RField<std::vector<T>>>(name);
+  auto field = std::make_unique<ROOT::RField<std::vector<T>>>(name);
   model.AddProjectedField(std::move(field),
                           [&name, &source](const std::string &fieldName) {
                             if (fieldName == name) {
@@ -31,7 +26,7 @@ static void AddProjectedField(RNTupleModel &model, std::string_view name,
 }
 
 void write(std::string_view filename = "projections.nested.root") {
-  auto model = RNTupleModel::Create();
+  auto model = ROOT::RNTupleModel::Create();
 
   auto VectorPair =
       model->MakeField<std::vector<std::pair<std::int32_t, float>>>(
@@ -39,10 +34,10 @@ void write(std::string_view filename = "projections.nested.root") {
   AddProjectedField<std::int32_t>(*model, "VectorInt", "_0");
   AddProjectedField<float>(*model, "VectorFloat", "_1");
 
-  RNTupleWriteOptions options;
+  ROOT::RNTupleWriteOptions options;
   options.SetCompression(0);
-  auto writer =
-      RNTupleWriter::Recreate(std::move(model), "ntpl", filename, options);
+  auto writer = ROOT::RNTupleWriter::Recreate(std::move(model), "ntpl",
+                                              filename, options);
 
   // First entry: ascending values
   VectorPair->emplace_back(1, 2.0);

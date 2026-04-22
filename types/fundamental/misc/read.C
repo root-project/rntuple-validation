@@ -1,9 +1,6 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::REntry;
-using ROOT::RNTupleReader;
-
 #include <cstddef> // for std::byte
 #include <fstream>
 #include <ostream>
@@ -11,7 +8,7 @@ using ROOT::RNTupleReader;
 #include <string_view>
 
 template <typename T>
-static void PrintIntegerValue(const REntry &entry, std::string_view name,
+static void PrintIntegerValue(const ROOT::REntry &entry, std::string_view name,
                               std::ostream &os, bool last = false) {
   T value = *entry.GetPtr<T>(name);
   os << "    \"" << name << "\": ";
@@ -29,7 +26,7 @@ void read(std::string_view input = "types.fundamental.misc.root",
   std::ofstream os(std::string{output});
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {

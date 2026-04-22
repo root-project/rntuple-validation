@@ -4,11 +4,6 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::RField;
-using ROOT::RNTupleModel;
-using ROOT::RNTupleWriteOptions;
-using ROOT::RNTupleWriter;
-
 #include <limits>
 #include <memory>
 #include <string_view>
@@ -16,19 +11,19 @@ using ROOT::RNTupleWriter;
 static constexpr double pi = 3.14159265358979323846;
 
 template <typename T>
-static std::shared_ptr<T> MakeFieldReal32Quant(RNTupleModel &model,
-                                               std::string_view name,
-                                               int nBits, double min, double max) {
+static std::shared_ptr<T> MakeFieldReal32Quant(ROOT::RNTupleModel &model,
+                                               std::string_view name, int nBits,
+                                               double min, double max) {
   assert(nBits >= 1 && nBits <= 32);
   assert(max > min);
-  auto field = std::make_unique<RField<T>>(name);
+  auto field = std::make_unique<ROOT::RField<T>>(name);
   field->SetQuantized(min, max, nBits);
   model.AddField(std::move(field));
   return model.GetDefaultEntry().GetPtr<T>(name);
 }
 
 void write(std::string_view filename = "types.fundamental.real32quant.root") {
-  auto model = RNTupleModel::Create();
+  auto model = ROOT::RNTupleModel::Create();
 
   auto FloatReal32Quant1 =
       MakeFieldReal32Quant<float>(*model, "FloatReal32Quant1", 1, -1, 1);
@@ -43,9 +38,10 @@ void write(std::string_view filename = "types.fundamental.real32quant.root") {
   auto DoubleReal32Quant32 =
       MakeFieldReal32Quant<double>(*model, "DoubleReal32Quant32", 32, -100, 25);
 
-  RNTupleWriteOptions options;
+  ROOT::RNTupleWriteOptions options;
   options.SetCompression(0);
-  auto writer = RNTupleWriter::Recreate(std::move(model), "ntpl", filename, options);
+  auto writer = ROOT::RNTupleWriter::Recreate(std::move(model), "ntpl",
+                                              filename, options);
 
   // First entry: ascending values
   *FloatReal32Quant1 = -1.0f;

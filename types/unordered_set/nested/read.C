@@ -1,9 +1,6 @@
 #include <ROOT/REntry.hxx>
 #include <ROOT/RNTupleReader.hxx>
 
-using ROOT::REntry;
-using ROOT::RNTupleReader;
-
 #include <TSystem.h>
 
 #include <cstdint>
@@ -16,7 +13,7 @@ using ROOT::RNTupleReader;
 
 using UnorderedSet = std::unordered_set<std::unordered_set<std::int32_t>>;
 
-static void PrintNestedUnorderedSetValue(const REntry &entry,
+static void PrintNestedUnorderedSetValue(const ROOT::REntry &entry,
                                          std::string_view name,
                                          std::ostream &os, bool last = false) {
   UnorderedSet &value = *entry.GetPtr<UnorderedSet>(name);
@@ -73,7 +70,7 @@ void read(std::string_view input = "types.unordered_set.nested.root",
   std::ofstream os(std::string{output});
   os << "[\n";
 
-  auto reader = RNTupleReader::Open("ntpl", input);
+  auto reader = ROOT::RNTupleReader::Open("ntpl", input);
   auto &entry = reader->GetModel().GetDefaultEntry();
   bool first = true;
   for (auto index : *reader) {

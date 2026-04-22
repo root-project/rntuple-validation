@@ -2,10 +2,6 @@
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
 
-using ROOT::RNTupleModel;
-using ROOT::RNTupleWriteOptions;
-using ROOT::RNTupleWriter;
-
 #include <TSystem.h>
 
 #include <string_view>
@@ -17,15 +13,15 @@ void write(std::string_view filename = "types.user.class.root") {
     throw std::runtime_error("could not find the required ROOT dictionaries, "
                              "please make sure to run `make` first");
 
-  auto model = RNTupleModel::Create();
+  auto model = ROOT::RNTupleModel::Create();
 
   auto value = model->MakeField<User>("f");
   auto vector = model->MakeField<std::vector<User>>("Vector");
 
-  RNTupleWriteOptions options;
+  ROOT::RNTupleWriteOptions options;
   options.SetCompression(0);
-  auto writer =
-      RNTupleWriter::Recreate(std::move(model), "ntpl", filename, options);
+  auto writer = ROOT::RNTupleWriter::Recreate(std::move(model), "ntpl",
+                                              filename, options);
 
   // First entry: simple values
   value->fInt = 1;
