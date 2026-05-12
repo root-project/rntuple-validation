@@ -7,6 +7,7 @@
 #endif
 #include <ROOT/RNTupleWriteOptions.hxx>
 #include <ROOT/RNTupleWriter.hxx>
+#include <ROOT/RVersion.hxx>
 
 #include <limits>
 #include <memory>
@@ -21,7 +22,11 @@ static std::shared_ptr<T> MakeFieldReal32Quant(ROOT::RNTupleModel &model,
   assert(nBits >= 1 && nBits <= 32);
   assert(max > min);
   auto field = std::make_unique<ROOT::RField<T>>(name);
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6, 40, 0)
+  field->SetQuantized(nBits, {min, max});
+#else
   field->SetQuantized(min, max, nBits);
+#endif
   model.AddField(std::move(field));
   return model.GetDefaultEntry().GetPtr<T>(name);
 }
