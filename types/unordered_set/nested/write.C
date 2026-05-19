@@ -18,8 +18,6 @@
 
 #include "NestedUnorderedSet.hxx"
 
-using UnorderedSet = std::unordered_set<std::unordered_set<std::int32_t>>;
-
 static std::shared_ptr<UnorderedSet>
 MakeUnorderedSetField(ROOT::RNTupleModel &model, std::string_view name,
                       ROOT::ENTupleColumnType indexType) {

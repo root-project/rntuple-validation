@@ -18,9 +18,6 @@
 
 #include "NestedUnorderedMultiset.hxx"
 
-using UnorderedMultiset =
-    std::unordered_multiset<std::unordered_multiset<std::int32_t>>;
-
 static std::shared_ptr<UnorderedMultiset>
 MakeUnorderedMultisetField(ROOT::RNTupleModel &model, std::string_view name,
                            ROOT::ENTupleColumnType indexType) {

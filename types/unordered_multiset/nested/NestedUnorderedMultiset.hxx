@@ -14,3 +14,6 @@ struct std::hash<std::unordered_multiset<std::int32_t>> {
     return h;
   }
 };
+
+using UnorderedMultiset =
+    std::unordered_multiset<std::unordered_multiset<std::int32_t>>;

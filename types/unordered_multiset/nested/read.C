@@ -11,8 +11,7 @@
 #include <string_view>
 #include <unordered_set>
 
-using UnorderedMultiset =
-    std::unordered_multiset<std::unordered_multiset<std::int32_t>>;
+#include "NestedUnorderedMultiset.hxx"
 
 static void PrintNestedUnorderedMultisetValue(const ROOT::REntry &entry,
                                               std::string_view name,
