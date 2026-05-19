@@ -11,7 +11,7 @@
 #include <string_view>
 #include <unordered_set>
 
-using UnorderedSet = std::unordered_set<std::unordered_set<std::int32_t>>;
+#include "NestedUnorderedSet.hxx"
 
 static void PrintNestedUnorderedSetValue(const ROOT::REntry &entry,
                                          std::string_view name,

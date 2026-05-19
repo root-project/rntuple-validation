@@ -13,3 +13,5 @@ template <> struct std::hash<std::unordered_set<std::int32_t>> {
     return h;
   }
 };
+
+using UnorderedSet = std::unordered_set<std::unordered_set<std::int32_t>>;
