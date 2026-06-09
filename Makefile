@@ -22,9 +22,9 @@ $(DICT_MAKEFILE_DIR)::
 .PHONY: write
 write:: $(WRITE_C)
 $(WRITE_C)::
-	@LD_LIBRARY_PATH=$(shell dirname $@) $(ROOT_EXE) -q -l $@
+	@LD_LIBRARY_PATH="$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}$(shell dirname $@)" $(ROOT_EXE) -q -l $@
 
 .PHONY: read
 read:: $(READ_C)
 $(READ_C)::
-	@LD_LIBRARY_PATH=$(shell dirname $@) $(ROOT_EXE) -q -l $@
+	@LD_LIBRARY_PATH="$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}$(shell dirname $@)" $(ROOT_EXE) -q -l $@
