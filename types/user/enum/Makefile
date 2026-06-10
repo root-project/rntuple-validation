@@ -20,7 +20,7 @@ $(DICT_DIR)UserEnum.cxx: UserEnum.hxx LinkDef.h
 	$(ROOTCLING) -f $@ $^
 
 $(DICT_DIR)libUserEnum.so: $(DICT_DIR)UserEnum.cxx
-	$(CXX) -shared -fPIC -o $@ $^ $(CXXFLAGS) $(LDFLAGS) -I $$(pwd)
+	$(CXX) -shared -fPIC -o $@ $^ $(CXXFLAGS) $(LDFLAGS) -I .
 
 clean:
 	$(RM) UserEnum.cxx UserEnum_rdict.pcm libUserEnum.so

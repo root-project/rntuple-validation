@@ -20,7 +20,7 @@ $(DICT_DIR)NestedMultimap.cxx: NestedMultimap.hxx LinkDef.h
 	$(ROOTCLING) -f $@ $^
 
 $(DICT_DIR)libNestedMultimap.so: $(DICT_DIR)NestedMultimap.cxx
-	$(CXX) -shared -fPIC -o $@ $^ $(CXXFLAGS) $(LDFLAGS) -I $$(pwd)
+	$(CXX) -shared -fPIC -o $@ $^ $(CXXFLAGS) $(LDFLAGS) -I .
 
 clean:
 	$(RM) NestedMultimap.cxx NestedMultimap_rdict.pcm libNestedMultimap.so
