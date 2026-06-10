@@ -14,13 +14,13 @@ LDFLAGS := $(shell $(ROOT_CONFIG) --libs)
 
 .PHONY: all clean
 
-all: libUserClass.so
+all: $(DICT_DIR)libUserClass.so
 
-UserClass.cxx: UserClass.hxx LinkDef.h
+$(DICT_DIR)UserClass.cxx: UserClass.hxx LinkDef.h
 	$(ROOTCLING) -f $@ $^
 
-libUserClass.so: UserClass.cxx
-	$(CXX) -shared -fPIC -o $@ $^ $(CXXFLAGS) $(LDFLAGS)
+$(DICT_DIR)libUserClass.so: $(DICT_DIR)UserClass.cxx
+	$(CXX) -shared -fPIC -o $@ $^ $(CXXFLAGS) $(LDFLAGS) -I $$(pwd)
 
 clean:
 	$(RM) UserClass.cxx UserClass_rdict.pcm libUserClass.so

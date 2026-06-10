@@ -14,13 +14,13 @@ LDFLAGS := $(shell $(ROOT_CONFIG) --libs)
 
 .PHONY: all clean
 
-all: libNestedMultimap.so
+all: $(DICT_DIR)libNestedMultimap.so
 
-NestedMultimap.cxx: NestedMultimap.hxx LinkDef.h
+$(DICT_DIR)NestedMultimap.cxx: NestedMultimap.hxx LinkDef.h
 	$(ROOTCLING) -f $@ $^
 
-libNestedMultimap.so: NestedMultimap.cxx
-	$(CXX) -shared -fPIC -o $@ $^ $(CXXFLAGS) $(LDFLAGS)
+$(DICT_DIR)libNestedMultimap.so: $(DICT_DIR)NestedMultimap.cxx
+	$(CXX) -shared -fPIC -o $@ $^ $(CXXFLAGS) $(LDFLAGS) -I $$(pwd)
 
 clean:
 	$(RM) NestedMultimap.cxx NestedMultimap_rdict.pcm libNestedMultimap.so
