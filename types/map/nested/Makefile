@@ -20,7 +20,7 @@ $(DICT_DIR)NestedMap.cxx: NestedMap.hxx LinkDef.h
 	$(ROOTCLING) -f $@ $^ 
 
 $(DICT_DIR)libNestedMap.so: $(DICT_DIR)NestedMap.cxx
-	$(CXX) -shared -fPIC -o $@ $^ $(CXXFLAGS) $(LDFLAGS) -I $$(pwd)
+	$(CXX) -shared -fPIC -o $@ $^ $(CXXFLAGS) $(LDFLAGS) -I .
 
 clean:
 	$(RM) NestedMap.cxx NestedMap_rdict.pcm libNestedMap.so

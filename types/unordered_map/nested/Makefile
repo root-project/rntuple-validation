@@ -20,7 +20,7 @@ $(DICT_DIR)NestedUnorderedMap.cxx: NestedUnorderedMap.hxx LinkDef.h
 	$(ROOTCLING) -f $@ $^
 
 $(DICT_DIR)libNestedUnorderedMap.so: $(DICT_DIR)NestedUnorderedMap.cxx
-	$(CXX) -shared -fPIC -o $@ $^ $(CXXFLAGS) $(LDFLAGS) -I $$(pwd)
+	$(CXX) -shared -fPIC -o $@ $^ $(CXXFLAGS) $(LDFLAGS) -I .
 
 clean:
 	$(RM) NestedUnorderedMap.cxx NestedUnorderedMap_rdict.pcm libNestedUnorderedMap.so
