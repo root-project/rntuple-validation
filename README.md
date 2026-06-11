@@ -30,3 +30,31 @@ They can be run individually or all at once with `make` using the top-level [`Ma
 The latter is also exercised by a GitHub Actions Workflow:
 ![Execute ROOT macros](https://github.com/root-project/rntuple-validation/actions/workflows/root.yml/badge.svg)
 The job also uploads the produced set of `.root` and `.json` files, which can be downloaded from the Summary page.
+
+Running the complete Validation Suite with `make` creates three folders:
+- _dict_: contains the produced dictionaries (`.so`, `.pcm` and `.cxx` files)
+- _write_: contains the produced `.root` files
+- _read_: contains the produced `.json` files
+
+Each operation can also be run individually, i.e. `make dict`, `make write` and `make read`.
+
+To store results separately per version, subdirectories can be defined via the `dict_dir`, `write_dir` or `read_dir` arguments. Note that `read_dir` creates a subdirectory inside the folder named by `write_dir` within _read_. For example:
+```
+make dict_dir=6.38.00 write_dir=6.38.00 read_dir=6.38.00
+```
+produces the following structure:
+```
+dict/
+├── 6.38.00/
+    ├── .so
+    ├── .pcm
+    └── .cxx
+write/
+├── 6.38.00/
+    └── .root
+read/
+├── 6.38.00/     <- version that wrote the .root files (write_dir)
+    └── 6.38.00/ <- version that read them and produced the .json files (read_dir)
+        └── .json
+```
+The two-level hierarchy in _read_ reflects the cross-validation between ROOT versions: the outer directory identifies the version whose `.root` files were used as input, and the inner directory identifies the version that read them and produced the `.json` output.
