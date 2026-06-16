@@ -36,7 +36,7 @@ Running the complete Validation Suite with `make` creates three folders:
 - _write_: contains the produced `.root` files
 - _read_: contains the produced `.json` files
 
-Each operation can also be run individually, i.e. `make dict`, `make write` and `make read`.
+Each operation can also be run individually, i.e. `make dict`, `make write` and `make read`. A ROOT version needs to be available beforehand!
 
 To store results separately per version, subdirectories can be defined via the `dict_dir`, `write_dir` or `read_dir` arguments. Note that `read_dir` creates a subdirectory inside the folder named by `write_dir` within _read_. For example:
 ```
@@ -58,3 +58,10 @@ read/
         └── .json
 ```
 The two-level hierarchy in _read_ reflects the cross-validation between ROOT versions: the outer directory identifies the version whose `.root` files were used as input, and the inner directory identifies the version that read them and produced the `.json` output.
+
+Use `make validate` to automatically run the validation suite across multiple versions. For that, set `source_scripts` to the paths to source for each version, separated by spaces. The dictionaries and binaries are then built for each version, and each ROOT version is tested against every subdirectory found in _write_. \
+
+For example:
+```
+make validate source_dirs="<path_root_v1> <path_root_v2>"
+```
