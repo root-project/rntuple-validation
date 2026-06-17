@@ -6,3 +6,4 @@
 *.so
 Nested*.cxx
 User*.cxx
+*.zip

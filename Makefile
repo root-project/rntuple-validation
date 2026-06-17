@@ -1,4 +1,7 @@
 ROOT_EXE ?= $(shell which root.exe)
+ASSET_VERSION := 1.0.0
+ROOT_ASSET := RNTuple-ROOT-v$(ASSET_VERSION).zip 
+JSON_ASSET := Validation-JSON-v$(ASSET_VERSION).zip
 
 # directory arguments can be empty -> no sudirectories will be created, everything will be stored directly in those folders
 DICT_DIR := $(shell pwd)/dict/$(if $(dict_dir),$(dict_dir)/)
@@ -23,7 +26,7 @@ dict:: check $(DICT_MAKEFILE_DIR)
 $(DICT_MAKEFILE_DIR):: $(DICT_DIR)
 	@$(MAKE) -C $@
 $(DICT_DIR)::
-	@echo -e "\nStarting dict target - Storing dictionaries in: '$@'" && mkdir -p $@
+	@echo "\nStarting dict target - Storing dictionaries in: '$@'" && mkdir -p $@
 
 # run each write.C file in subdirectories to create .root files
 .PHONY: write
@@ -31,16 +34,16 @@ write:: check $(WRITE_C)
 $(WRITE_C):: $(WRITE_DIR)
 	@LD_LIBRARY_PATH="$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}$(DICT_DIR)" $(ROOT_EXE) -q -l '$@("$(WRITE_DIR)$(subst /,.,$(shell dirname $@)).root")'
 $(WRITE_DIR)::
-	@echo -e "\nStarting write target - Storing root files in: '$@'" && mkdir -p $@
+	@echo "\nStarting write target - Storing root files in: '$@'" && mkdir -p $@
 
 # run each read.C file in subdirectories to create .json files
 .PHONY: read
 read:: check $(READ_C)
 $(READ_C):: $(READ_DIR)
 	@LD_LIBRARY_PATH="$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}$(DICT_DIR)" $(ROOT_EXE) -q -l \
-	'$@("$(WRITE_DIR)/$(subst /,.,$(shell dirname $@)).root", "$(READ_DIR)$(subst /,.,$(shell dirname $@)).json")'
+	'$@("$(WRITE_DIR)$(subst /,.,$(shell dirname $@)).root", "$(READ_DIR)$(subst /,.,$(shell dirname $@)).json")'
 $(READ_DIR)::
-	@echo -e "\nStarting read target - Storing json files in: '$@'" && mkdir -p $@
+	@echo "\nStarting read target - Storing json files in: '$@'" && mkdir -p $@
 
 .PHONY: check
 check::
@@ -72,3 +75,10 @@ validate:
 		done; \
 	done
 	@echo Finished
+
+download: 
+	@echo "Downloading and unpacking assets from GitHub.."
+	@wget -q -N -P ./assets https://github.com/root-project/rntuple-validation/releases/download/v$(ASSET_VERSION)/$(ROOT_ASSET)
+	@mkdir -p write && unzip -n -q -d write/$(basename $(ROOT_ASSET)) assets/$(ROOT_ASSET)
+	@wget -q -N -P ./assets https://github.com/root-project/rntuple-validation/releases/download/v$(ASSET_VERSION)/$(JSON_ASSET)
+	@mkdir -p read/$(basename $(ROOT_ASSET)) && unzip -n -q -d read/$(basename $(ROOT_ASSET))/$(basename $(JSON_ASSET)) assets/$(JSON_ASSET)

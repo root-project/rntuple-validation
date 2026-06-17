@@ -59,9 +59,11 @@ read/
 ```
 The two-level hierarchy in _read_ reflects the cross-validation between ROOT versions: the outer directory identifies the version whose `.root` files were used as input, and the inner directory identifies the version that read them and produced the `.json` output.
 
-Use `make validate` to automatically run the validation suite across multiple versions. For that, set `source_scripts` to the paths to source for each version, separated by spaces. The dictionaries and binaries are then built for each version, and each ROOT version is tested against every subdirectory found in _write_. \
+Use `make validate` to automatically run the validation suite across multiple versions. For that, set `source_scripts` to the paths to source for each version, separated by spaces. The dictionaries and binaries are then built for each version, and each ROOT version is tested against every subdirectory found in _write_. 
 
 For example:
 ```
 make validate source_dirs="<path_root_v1> <path_root_v2>"
 ```
+
+Run `make download` in advance to download the ROOT and JSON [assets](https://github.com/root-project/rntuple-validation/releases/) from GitHub. Asset version `1.0.0` is used as default. Set the `ASSET_VERSION` argument to use another version.
