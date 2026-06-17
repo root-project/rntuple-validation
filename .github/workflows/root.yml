@@ -18,9 +18,11 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: RNTuple-ROOT
-          path: "*.root"
+          path: "write/*.root"
+          if-no-files-found: error
       - name: Upload produced validation JSON files
         uses: actions/upload-artifact@v7
         with:
           name: Validation-JSON
-          path: "*.json"
+          path: "read/*.json"
+          if-no-files-found: error
