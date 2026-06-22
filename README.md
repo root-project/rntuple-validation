@@ -67,3 +67,10 @@ make validate source_dirs="<path_root_v1> <path_root_v2>"
 ```
 
 Run `make download` in advance to download the ROOT and JSON [assets](https://github.com/root-project/rntuple-validation/releases/) from GitHub. Asset version `1.0.0` is used as default. Set the `ASSET_VERSION` argument to use another version.
+
+### Exporting Results as HTML
+Run `make export_html` to compare the generated `.json` files with each other and produce an `.html` file for visualization on a website. The output contains a table where each cell corresponds to a subfolder `read/<write_ver>/<read_ver>` and shows the comparison results against all other subfolders that satisfy the comparison logic described below. Clicking a cell reveals these results.
+
+**Comparison logic**: Each subfolder is assigned a *limiting version*, defined as the smaller of its `write` and `read` versions. A subfolder is only compared against other subfolders whose limiting version is less than or equal to its own.
+
+For example, `read/6.38.00/6.40.00` has a limiting version of `6.38.00` (the smaller of the two). It will be compared against `read/6.36.00/6.36.00` (limiting version `6.36.00` ≤ `6.38.00`), but not against `read/6.40.00/6.40.00` (limiting version `6.40.00` > `6.38.00`).
