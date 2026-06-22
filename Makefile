@@ -1,4 +1,5 @@
 ROOT_EXE ?= $(shell which root.exe)
+PYTHON3 ?= $(shell which python3)
 ASSET_VERSION := 1.0.0
 ROOT_ASSET := RNTuple-ROOT-v$(ASSET_VERSION).zip 
 JSON_ASSET := Validation-JSON-v$(ASSET_VERSION).zip
@@ -67,7 +68,7 @@ validate:
 		(bash -c "source $$s_path && ROOT_VERSION=\$$(root-config --version) && $(MAKE) write dict_dir=\$$ROOT_VERSION write_dir=\$$ROOT_VERSION") || exit $$?; \
 	done
 	
-#	run make read to do cross-validation
+#	run make read to create json files
 	@echo "-- Creating .json files --"
 	@for s_path in $(source_scripts); do \
 		for w_dir in write/*; do \
@@ -76,9 +77,14 @@ validate:
 	done
 	@echo Finished
 
+.PHONY: download
 download: 
 	@echo "Downloading and unpacking assets from GitHub.."
 	@wget -q -N -P ./assets https://github.com/root-project/rntuple-validation/releases/download/v$(ASSET_VERSION)/$(ROOT_ASSET)
 	@mkdir -p write && unzip -n -q -d write/$(basename $(ROOT_ASSET)) assets/$(ROOT_ASSET)
 	@wget -q -N -P ./assets https://github.com/root-project/rntuple-validation/releases/download/v$(ASSET_VERSION)/$(JSON_ASSET)
 	@mkdir -p read/$(basename $(ROOT_ASSET)) && unzip -n -q -d read/$(basename $(ROOT_ASSET))/$(basename $(JSON_ASSET)) assets/$(JSON_ASSET)
+
+.PHONY: export_html
+export_html:
+	$(PYTHON3) scripts/cross_validation.py

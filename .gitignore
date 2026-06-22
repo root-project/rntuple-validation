@@ -7,3 +7,5 @@
 Nested*.cxx
 User*.cxx
 *.zip
+*.html
+!template.html
