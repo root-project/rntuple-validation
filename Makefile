@@ -22,32 +22,32 @@ WRITE_C := $(sort $(shell find . -name write.C))
 READ_C := $(sort $(shell find . -name read.C))
 
 # run each Makefile in subdirectories to create dictionaries
-.PHONY: dict
-dict:: check $(DICT_MAKEFILE_DIR)
-$(DICT_MAKEFILE_DIR):: $(DICT_DIR)
+.PHONY: dict $(DICT_MAKEFILE_DIR) $(DICT_DIR)
+dict: check $(DICT_MAKEFILE_DIR)
+$(DICT_MAKEFILE_DIR): $(DICT_DIR)
 	@$(MAKE) -C $@
-$(DICT_DIR)::
+$(DICT_DIR):
 	@echo "\nStarting dict target - Storing dictionaries in: '$@'" && mkdir -p $@
 
 # run each write.C file in subdirectories to create .root files
-.PHONY: write
-write:: check $(WRITE_C)
-$(WRITE_C):: $(WRITE_DIR)
+.PHONY: write $(WRITE_C) $(WRITE_DIR)
+write: check $(WRITE_C)
+$(WRITE_C): $(WRITE_DIR)
 	@LD_LIBRARY_PATH="$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}$(DICT_DIR)" $(ROOT_EXE) -q -l '$@("$(WRITE_DIR)$(subst /,.,$(shell dirname $@)).root")'
-$(WRITE_DIR)::
+$(WRITE_DIR):
 	@echo "\nStarting write target - Storing root files in: '$@'" && mkdir -p $@
 
 # run each read.C file in subdirectories to create .json files
-.PHONY: read
-read:: check $(READ_C)
-$(READ_C):: $(READ_DIR)
+.PHONY: read $(READ_C) $(READ_DIR)
+read: check $(READ_C)
+$(READ_C): $(READ_DIR)
 	@LD_LIBRARY_PATH="$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}$(DICT_DIR)" $(ROOT_EXE) -q -l \
 	'$@("$(WRITE_DIR)$(subst /,.,$(shell dirname $@)).root", "$(READ_DIR)$(subst /,.,$(shell dirname $@)).json")'
-$(READ_DIR)::
+$(READ_DIR):
 	@echo "\nStarting read target - Storing json files in: '$@'" && mkdir -p $@
 
 .PHONY: check
-check::
+check:
 	@test -x "$(ROOT_EXE)" || { echo "Could not find root.exe"; exit 1; }
 
 .PHONY: validate
