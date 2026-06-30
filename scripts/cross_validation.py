@@ -80,6 +80,7 @@ def compare_folders(folder_a: str, folder_b: str, log: callable=None) -> dict:
     `status` indicates if differences exist:
     - 0 = folders are equal
     - 1 = differences in files found
+    - 2 = no files have been compared
 
     Args:
         folder_a (string): Path to folder A
@@ -113,6 +114,7 @@ def compare_folders(folder_a: str, folder_b: str, log: callable=None) -> dict:
             file_diffs[name] = "\n".join(diff)
 
     if file_diffs: status = 1
+    if not common_files: status = 2
 
     return {
         "folder_a": str(folder_a),
