@@ -12,6 +12,7 @@
     --text-dim: #9a9ca5;
     --equal: #3a6b4f;
     --file-diff: #8a3a3a;
+    --missing-files: #8a3a3a;
     --mono: "Fira Code", monospace;
   }
 
@@ -94,6 +95,7 @@
 
   .status-equal { background: var(--equal); }
   .status-file_diffs { background: var(--file-diff); }
+  .status-missing_files { background: var(--missing-files); }
 
   .legend {
     display: flex;
@@ -185,7 +187,7 @@
 
   <div class="legend">
     <span><i style="background: var(--equal)"></i>equal</span>
-    <span><i style="background: var(--file-diff)"></i>file difference</span>
+    <span><i style="background: var(--file-diff)"></i>file difference / no files compared</span>
   </div>
 
   <script>
@@ -193,15 +195,15 @@
 
     // map status code to different outputs
     function statusSign(statusCode) {
-      return {0: "✓", 1: "𐄂"}[statusCode] ?? `unknown(${statusCode})`;
+      return {0: "✓", 1: "𐄂", 2: "𐄂"}[statusCode] ?? `unknown(${statusCode})`;
     }
 
     function statusLabel(statusCode) {
-      return {0: "equal", 1: "file differences"}[statusCode] ?? `unknown(${statusCode})`;
+      return {0: "equal", 1: "file differences", 2: "no files compared"}[statusCode] ?? `unknown(${statusCode})`;
     }
 
     function statusColor(statusCode) {
-      return {0: "equal", 1: "file_diffs"}[statusCode] ?? `unknown(${statusCode})`;
+      return {0: "equal", 1: "file_diffs", 2: "missing_files"}[statusCode] ?? `unknown(${statusCode})`;
     }
 
     function worstStatus(comparisons) {
