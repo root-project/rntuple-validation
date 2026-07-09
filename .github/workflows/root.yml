@@ -1,28 +1,71 @@
 name: Execute ROOT macros
 on:
   push:
-    branches: 'main'
+    branches:
+      - 'main'
   pull_request:
+  workflow_dispatch:
+    inputs:
+      versions:
+        description: 'LCG Versions, separated by comma'
+        required: true
+        default: '108,109,110'
+        type: string
 
 jobs:
-  root-v636:
-    name: ROOT 6.36
-    runs-on: ubuntu-latest
-    container: rootproject/root:6.36.00-ubuntu25.04
+  cross-validation:
+    name: Cross Validation
+    runs-on:
+      labels: [self-hosted]
+    
+    env:
+      VERSIONS: ${{ inputs.versions || '110' }} # run LCG release 110 for each PR/push
+
+    container:
+      image: gitlab-registry.cern.ch/sft/docker/alma9-core:latest
+      options: --security-opt label=disable --rm
+      volumes:
+        - /cvmfs/sft.cern.ch:/cvmfs/sft.cern.ch:ro
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v5
-      - name: Execute ROOT macros
-        run: make
-      - name: Upload produced RNTuple ROOT files
+
+      - name: Download assets
+        run: make download
+      
+      # add curly brackets if more than one version is given
+      - name: Run Validation Suite
+        run: |
+          if [[ "$VERSIONS" == *,* ]]; then
+            PATTERN="{$VERSIONS}"
+          else
+            PATTERN="$VERSIONS"
+          fi
+          eval "SCRIPTS=(/cvmfs/sft.cern.ch/lcg/views/LCG_$PATTERN/x86_64-el9-gcc13-opt/setup.sh)"
+          make -j$(nproc) validate source_scripts="${SCRIPTS[*]}"
+        shell: bash         
+
+      - name: Create HTML
+        run: make export_html
+
+      - name: Upload RNTuple ROOT files
         uses: actions/upload-artifact@v7
         with:
           name: RNTuple-ROOT
-          path: "write/*.root"
+          path: "write/**/*.root"
           if-no-files-found: error
-      - name: Upload produced validation JSON files
+      - name: Upload validation JSON files
         uses: actions/upload-artifact@v7
         with:
           name: Validation-JSON
-          path: "read/*.json"
+          path: "read/**/*.json"
           if-no-files-found: error
+
+      - name: Upload HTML
+        uses: actions/upload-artifact@v7
+        with:
+          name: validation-report
+          path: ${{ github.workspace }}/web/html/cross_validation_results.html
+          archive: false
+          retention-days: 30

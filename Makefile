@@ -80,9 +80,10 @@ validate:
 .PHONY: download
 download: 
 	$(info Downloading and unpacking assets from GitHub..)
-	@wget -q -N -P ./assets https://github.com/root-project/rntuple-validation/releases/download/v$(ASSET_VERSION)/$(ROOT_ASSET)
+	@mkdir -p assets
+	@curl -sSL -o ./assets/$(ROOT_ASSET) -z ./assets/$(ROOT_ASSET) https://github.com/root-project/rntuple-validation/releases/download/v$(ASSET_VERSION)/$(ROOT_ASSET)
 	@mkdir -p write && unzip -n -q -d write/$(basename $(ROOT_ASSET)) assets/$(ROOT_ASSET)
-	@wget -q -N -P ./assets https://github.com/root-project/rntuple-validation/releases/download/v$(ASSET_VERSION)/$(JSON_ASSET)
+	@curl -sSL -o ./assets/$(JSON_ASSET) -z ./assets/$(JSON_ASSET) https://github.com/root-project/rntuple-validation/releases/download/v$(ASSET_VERSION)/$(JSON_ASSET)
 	@mkdir -p read/$(basename $(ROOT_ASSET)) && unzip -n -q -d read/$(basename $(ROOT_ASSET))/$(basename $(JSON_ASSET)) assets/$(JSON_ASSET)
 
 .PHONY: export_html
