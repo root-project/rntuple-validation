@@ -8,6 +8,7 @@ JSON_ASSET := Validation-JSON-v$(ASSET_VERSION).zip
 DICT_DIR := $(shell pwd)/dict/$(if $(dict_dir),$(dict_dir)/)
 WRITE_DIR := $(shell pwd)/write/$(if $(write_dir),$(write_dir)/)
 READ_DIR := $(shell pwd)/read/$(if $(write_dir),$(write_dir)/)$(if $(read_dir),$(read_dir)/)
+READ_DIR_JSROOT := $(shell pwd)/read/$(if $(write_dir),$(write_dir)/)jsroot/
 export DICT_DIR
 
 .PHONY: all
@@ -17,9 +18,10 @@ all: check
 	$(MAKE) read
 
 # This assumes there is no whitespace in any of the paths...
-DICT_MAKEFILE_DIR := $(sort $(shell find */ -name Makefile -printf "%h\n"))
+DICT_MAKEFILE_DIR := $(sort $(shell find */ -name Makefile -not -path "node_modules/*" -printf "%h\n"))
 WRITE_C := $(sort $(shell find . -name write.C))
 READ_C := $(sort $(shell find . -name read.C))
+READ_MJS := $(sort $(shell find . -name read.mjs))
 
 # run each Makefile in subdirectories to create dictionaries
 .PHONY: dict $(DICT_MAKEFILE_DIR) $(DICT_DIR)
@@ -47,6 +49,15 @@ $(READ_C): $(READ_DIR)
 	'$@("$(WRITE_DIR)$(subst /,.,$(shell dirname $@)).root", "$(READ_DIR)$(subst /,.,$(shell dirname $@)).json")'
 $(READ_DIR):
 	$(info ###### Starting read target - Storing json files in: '$@' ######)
+	@mkdir -p $@
+
+.PHONY: read_jsroot $(READ_MJS) $(READ_DIR_JSROOT)
+read_jsroot: $(READ_MJS)
+$(READ_MJS): $(READ_DIR_JSROOT)
+	@echo Processing $@
+	@node $@ $(WRITE_DIR)$(subst jsroot.,,$(subst /,.,$(shell dirname $@)).root) $(READ_DIR_JSROOT)$(subst jsroot.,,$(subst /,.,$(shell dirname $@))).json
+$(READ_DIR_JSROOT):
+	$(info  ###### Storing json files created by JSROOT in: '$@' ######)
 	@mkdir -p $@
 
 .PHONY: check

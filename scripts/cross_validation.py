@@ -152,6 +152,10 @@ def get_limiting_version(write_ver: str, read_ver: str) -> Version:
 
     if write_ver.startswith("RNTuple"):
         return Version("0.00.00")
+
+    # currently treating JSROOT as highest version to get a separate column in the HTML
+    if read_ver.startswith("jsroot"):
+        return Version("10.10.10")
     return min(Version(write_ver), Version(read_ver))
 
 def meets_comparison_logic(folder_a: str, folder_b: str) -> bool:

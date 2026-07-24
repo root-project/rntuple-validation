@@ -74,3 +74,13 @@ Run `make export_html` to compare the generated `.json` files with each other an
 **Comparison logic**: Each subfolder is assigned a *limiting version*, defined as the smaller of its `write` and `read` versions. A subfolder is only compared against other subfolders whose limiting version is less than or equal to its own.
 
 For example, `read/6.38.00/6.40.00` has a limiting version of `6.38.00` (the smaller of the two). It will be compared against `read/6.36.00/6.36.00` (limiting version `6.36.00` ≤ `6.38.00`), but not against `read/6.40.00/6.40.00` (limiting version `6.40.00` > `6.38.00`).
+
+### Running tests for JSROOT
+To run tests for JSROOT, `nodejs` is required as well as the node-package of JSROOT:
+```
+npm install jsroot
+```
+
+Run `make read_jsroot` to read the generated `.root` files with [JSROOT](https://github.com/root-project/jsroot), a JavaScript library that is capable of reading ROOT files. The supported tests are inside `jsroot`. The resulting `.json` files are stored inside `read/jsroot`.
+
+Run `make write` first to create the `.root` files using the ROOT macros!

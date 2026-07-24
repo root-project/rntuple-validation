@@ -9,3 +9,4 @@ User*.cxx
 *.zip
 *.html
 !template.html
+node_modules/
