@@ -1,26 +1,72 @@
-import { writeFileSync, mkdirSync, existsSync } from 'fs';
+import { writeFileSync, mkdirSync, existsSync } from "fs";
+import { openFile, TSelector } from "jsroot";
+import { rntupleProcess } from "jsroot/rntuple";
 
-export function writeJson(dict_input, output, marker=null) {
-    let dict_string = JSON.stringify(dict_input, null, 2);
-    dict_string += "\n"; // read.C macro have an empty new line at the end
+/**
+ *
+ * @param {string} input - path to input .root file
+ * @param {string} output - path to output .json file
+ * @param {array} fields - list of fields in RNTuple inside input
+ * @param {function} preprocess - optional. function to format entries for JSON serialization
+ * @param {function} args - object containing parameters for preprocess. dict-like object where keys have to match args of preprocess, other than value
+ */
+export async function read(input, output, fields, preprocess, args) {
+  const file = await openFile(input),
+    rntuple = await file.readObject("ntpl");
 
-    // create folder if not exist and output contains folder path
-    let output_dir = output.split("/").slice(0, -1).join("/");
-    if (output_dir !== "") {
-        if (!existsSync(output_dir)){
-            mkdirSync(output_dir, { recursive: true });
+  let dict = [];
+
+  const selector = new TSelector();
+
+  for (const f of fields) {
+    selector.addBranch(f);
+  }
+
+  selector.Process = function (entryIndex) {
+    const subdict = {};
+    for (const field of fields) {
+      try {
+        let value = this.tgtobj[field];
+        if (typeof preprocess === "function") {
+          value = preprocess(value, { ...args, field });
         }
+        subdict[field] = value;
+      } catch (err) {
+        console.error(
+          `ERROR: Failed to read ${field} at entry ${entryIndex}: ${err.message}`,
+        );
+      }
     }
+    dict.push(subdict);
+  };
 
-    // serialize BigInt as string and then remove the quotation marks, to avoid precision loss of Number()
-    if (marker !== null) {
-        dict_string = dict_string.replace(new RegExp(`"${marker}(-?\\d+)${marker}"`, 'g'),'$1');
-    }
-
-    writeFileSync(output, dict_string);
+  await rntupleProcess(rntuple, selector);
+  writeJson(dict, output, args);
 }
 
-// convert float to hex representation based on IEEE-754 and C99 standard
+export function writeJson(dict_input, output, { marker } = {}) {
+  let dict_string = JSON.stringify(dict_input, null, 2);
+  dict_string += "\n"; // read.C macro have an empty new line at the end
+
+  // create folder if not exist and output contains folder path
+  let output_dir = output.split("/").slice(0, -1).join("/");
+  if (output_dir !== "") {
+    if (!existsSync(output_dir)) {
+      mkdirSync(output_dir, { recursive: true });
+    }
+  }
+
+  // serialize BigInt as string and then remove the quotation marks, to avoid precision loss of Number()
+  if (marker !== null) {
+    dict_string = dict_string.replace(
+      new RegExp(`"${marker}(-?\\d+)${marker}"`, "g"),
+      "$1",
+    );
+  }
+
+  writeFileSync(output, dict_string);
+}
+
 export function floatToHex(num) {
   if (num === 0) return (Object.is(num, -0) ? "-" : "") + "0x0p+0";
 
