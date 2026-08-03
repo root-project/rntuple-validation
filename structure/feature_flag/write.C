@@ -14,6 +14,8 @@ using ROOT::Internal::RNTupleDescriptorBuilder;
 using ROOT::Internal::RNTupleFileWriter;
 using ROOT::Internal::RNTupleSerializer;
 
+static constexpr unsigned int kFeatureFlagTest = 137;
+
 void write(std::string_view filename = "structure.feature_flag.root") {
   // Note that we are writing a file with a so-far unused feature flag. This
   // cannot use the regular production API but we have to use the internal,
@@ -24,7 +26,7 @@ void write(std::string_view filename = "structure.feature_flag.root") {
   descBuilder.SetVersionForWriting();
 #endif
   descBuilder.SetNTuple("ntpl", "");
-  descBuilder.SetFeature(ROOT::RNTupleDescriptor::kFeatureFlagTest);
+  descBuilder.SetFeature(kFeatureFlagTest);
   descBuilder.AddField(RFieldDescriptorBuilder::FromField(ROOT::RFieldZero())
                            .FieldId(0)
                            .MakeDescriptor()
