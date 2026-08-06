@@ -5,6 +5,3 @@
  * [`real`](real): `Real{16,32,64}`, `SplitReal{32,64}`
  * [`real32trunc`](real32trunc): `Real32Trunc`
  * [`real32quant`](real32quant): `Real32Quant`
-
-Note:
-- the columns of `real32quant` are more precise in JSROOT, since JavaScript natively supports double-precision floats
