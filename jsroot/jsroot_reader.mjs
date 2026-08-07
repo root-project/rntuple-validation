@@ -118,3 +118,17 @@ export function sortDeep(obj) {
 
   return obj;
 }
+
+export function pairArrayToMap(arr) {
+  // sort by key
+  arr.sort((a, b) =>
+    String(a.first).localeCompare(String(b.first)),
+  );
+
+  return Object.fromEntries(
+    arr.map((p) => [
+      p.first,
+      Array.isArray(p.second) ? pairArrayToMap(p.second) : p.second,
+    ]),
+  );
+}
