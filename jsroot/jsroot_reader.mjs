@@ -98,3 +98,23 @@ export function floatToHex(num) {
 
   return (sign ? "-" : "") + "0x" + leading + frac + "p" + expStr;
 }
+
+export function sortArrayOfNumbers(arr) {
+  return arr.sort((a, b) => a - b);
+}
+
+export function sortDeep(obj) {
+  sortArrayOfNumbers(obj); // sort nums inside array
+
+  obj.forEach((value) => { if (Array.isArray(value)) sortArrayOfNumbers(value); }); // sort elements inside inner array
+
+  obj.sort((a, b) => {
+    const len = Math.min(a.length, b.length);
+    for (let i = 0; i < len; i++) {
+      if (a[i] !== b[i]) return a[i] - b[i];
+    }
+    return a.length - b.length;
+  });
+
+  return obj;
+}
