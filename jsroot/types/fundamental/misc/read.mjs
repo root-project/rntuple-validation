@@ -7,5 +7,7 @@ function convertToNum(value) {
 
 const fields = ["Bit", "Byte", "Char"];
 
-const [input, output] = process.argv.slice(2);
+const [input = "types.fundamental.misc.root", output = "types.fundamental.misc.json"] =
+  process.argv.slice(2);
+
 read(input, output, fields, convertToNum);
