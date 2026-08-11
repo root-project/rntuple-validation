@@ -9,5 +9,7 @@ const fields = [
   "DoubleReal32Quant32",
 ];
 
-const [input, output] = process.argv.slice(2);
+const [input = "types.fundamental.real32quant.root", output = "types.fundamental.real32quant.json"] =
+  process.argv.slice(2);
+
 read(input, output, fields, floatToHex);

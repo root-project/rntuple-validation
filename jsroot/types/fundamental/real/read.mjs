@@ -11,5 +11,7 @@ const fields = [
   "DoubleSplitReal64",
 ];
 
-const [input, output] = process.argv.slice(2);
+const [input = "types.fundamental.real.root", output = "types.fundamental.real.json"] =
+  process.argv.slice(2);
+
 read(input, output, fields, floatToHex);
