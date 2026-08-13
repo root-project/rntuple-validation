@@ -8,3 +8,4 @@ The values can be found in the reference files (`structure.*.json`).
  * [`cluster_groups`](cluster_groups): multiple cluster groups
  * [`empty`](empty): empty RNTuple without entries
  * [`feature_flag`](feature_flag): unknown feature flag
+ * [`attributes`](attributes): entries with associated attributes
