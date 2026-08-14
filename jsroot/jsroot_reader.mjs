@@ -45,7 +45,8 @@ export async function read(input, output, fields, preprocess, args) {
 }
 
 export function writeJson(dict_input, output, { marker } = {}) {
-  let dict_string = JSON.stringify(dict_input, null, 2);
+  let dict_string =
+    dict_input.length === 0 ? "[\n]" : JSON.stringify(dict_input, null, 2);
   dict_string += "\n"; // read.C macro have an empty new line at the end
 
   // create folder if not exist and output contains folder path
