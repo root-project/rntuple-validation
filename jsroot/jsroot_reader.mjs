@@ -40,7 +40,7 @@ export async function read(input, output, fields, preprocess, args) {
     dict.push(subdict);
   };
 
-  await rntupleProcess(rntuple, selector);
+  await rntupleProcess(rntuple, selector, { preserveBigInt: true });
   writeJson(dict, output, args);
 }
 
