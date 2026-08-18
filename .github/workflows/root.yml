@@ -1,5 +1,7 @@
 name: Execute ROOT macros
 on:
+  schedule:
+      - cron: '17 2 * * 1' # every monday at 02:17 UTC
   push:
     branches:
       - 'main'
@@ -11,6 +13,10 @@ on:
         required: true
         default: '108,109,110'
         type: string
+      run_dev3:
+        description: 'Run latest LCG nightly build'
+        type: boolean
+        default: false
 
 jobs:
   cross-validation:
@@ -19,13 +25,16 @@ jobs:
       labels: [self-hosted]
     
     env:
-      VERSIONS: ${{ inputs.versions || '110' }} # run LCG release 110 for each PR/push
+      # run LCG releases 108, 109 and 110 for each schedules, and 110 for each PR/push
+      VERSIONS: ${{ inputs.versions || (github.event_name == 'schedule' && '108,109,110' || '110') }}
+      RUN_DEV3: ${{ inputs.run_dev3 == true || github.event_name == 'schedule' }}
 
     container:
       image: gitlab-registry.cern.ch/sft/docker/alma9-core:latest
       options: --security-opt label=disable --rm
       volumes:
         - /cvmfs/sft.cern.ch:/cvmfs/sft.cern.ch:ro
+        - /cvmfs/sft-nightlies.cern.ch:/cvmfs/sft-nightlies.cern.ch:ro
 
     steps:
       - name: Check out repository
@@ -37,12 +46,18 @@ jobs:
       # add curly brackets if more than one version is given
       - name: Run Validation Suite
         run: |
+          VERSIONS=$(echo "$VERSIONS" | sed 's/[^,]\+/LCG_&/g')
+
+          if [[ "$RUN_DEV3" == "true" ]]; then
+            VERSIONS="${VERSIONS},dev3/latest"
+          fi
+
           if [[ "$VERSIONS" == *,* ]]; then
             PATTERN="{$VERSIONS}"
           else
             PATTERN="$VERSIONS"
           fi
-          eval "SCRIPTS=(/cvmfs/sft.cern.ch/lcg/views/LCG_$PATTERN/x86_64-el9-gcc13-opt/setup.sh)"
+          eval "SCRIPTS=(/cvmfs/sft.cern.ch/lcg/views/$PATTERN/x86_64-el9-gcc13-opt/setup.sh)"
           make -j$(nproc) validate source_scripts="${SCRIPTS[*]}"
         shell: bash         
 
