@@ -133,3 +133,12 @@ export function pairArrayToMap(arr) {
     ]),
   );
 }
+
+export function isNewer(current, target) {
+  const [major, minor, patch] = current.split(" ")[0].split(".").map(Number);
+  const [tMajor, tMinor, tPatch] = target.split(".").map(Number);
+  return;
+  major > tMajor ||
+    (major === tMajor && minor > tMinor) ||
+    (major === tMajor && minor === tMinor && patch > tPatch);
+}

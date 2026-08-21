@@ -17,6 +17,11 @@ on:
         description: 'Run latest LCG nightly build'
         type: boolean
         default: false
+      jsroot_version:
+        description: 'JSROOT Version (leave empty to not run tests)'
+        required: false
+        default: '7.11.1'
+        type: string
 
 jobs:
   cross-validation:
@@ -25,9 +30,10 @@ jobs:
       labels: [self-hosted]
     
     env:
-      # run LCG releases 108, 109 and 110 for each schedules, and 110 for each PR/push
-      VERSIONS: ${{ inputs.versions || (github.event_name == 'schedule' && '108,109,110' || '110') }}
+      VERSIONS: ${{ inputs.versions || (github.event_name == 'schedule' && '108,109,110' || '110') }} # run LCG releases 108, 109 and 110 for each schedules, and 110 for each PR/push
       RUN_DEV3: ${{ inputs.run_dev3 == true || github.event_name == 'schedule' }}
+      JSROOT_SETUP: /cvmfs/sft.cern.ch/lcg/views/LCG_110/x86_64-el9-gcc13-opt/setup.sh
+      JSROOT_VERSION: ${{ inputs.jsroot_version || '~7.11.0' }} # use JSROOT version 7.11.x with newest patch version
 
     container:
       image: gitlab-registry.cern.ch/sft/docker/alma9-core:latest
@@ -59,7 +65,14 @@ jobs:
           fi
           eval "SCRIPTS=(/cvmfs/sft.cern.ch/lcg/views/$PATTERN/x86_64-el9-gcc13-opt/setup.sh)"
           make -j$(nproc) validate source_scripts="${SCRIPTS[*]}"
-        shell: bash         
+        shell: bash
+
+      - name: Run JSROOT tests
+        if: ${{ env.JSROOT_VERSION != '' }}
+        run: |
+          source "$JSROOT_SETUP"
+          npm install "jsroot@$JSROOT_VERSION"
+          make -j$(nproc) validate_jsroot
 
       - name: Create HTML
         run: make export_html

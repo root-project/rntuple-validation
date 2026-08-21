@@ -84,3 +84,5 @@ npm install jsroot
 Run `make read_jsroot` to read the generated `.root` files with [JSROOT](https://github.com/root-project/jsroot), a JavaScript library that is capable of reading ROOT files. The supported tests are inside `jsroot`. The resulting `.json` files are stored inside `read/jsroot`.
 
 Run `make write` first to create the `.root` files using the ROOT macros!
+
+Run `make validate_jsroot` to read the `.root` files for each subdir in `write/` and store them in subdirs in `read/<subdir>/jsroot`.

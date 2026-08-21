@@ -64,6 +64,12 @@ $(READ_DIR_JSROOT):
 check:
 	@test -x "$(ROOT_EXE)" || { echo "Could not find root.exe"; exit 1; }
 
+.PHONY: validate_jsroot
+validate_jsroot:
+	@for w_dir in write/*; do \
+	    $(MAKE) read_jsroot write_dir=$$(basename "$$w_dir"); \
+	done
+
 .PHONY: validate
 validate:
 	@if [ "$(source_scripts)" = "" ]; then\
