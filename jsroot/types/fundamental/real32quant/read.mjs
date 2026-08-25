@@ -1,7 +1,7 @@
 import { read, floatToHex, isNewer } from "../../../jsroot_reader.mjs";
 
 if (!isNewer("7.11.1")) {
-  console.log(" -> Skipped types/fundamental/real32quant: version too low")
+  console.log(" -> Skipped types/fundamental/real32quant: version too low");
   process.exit();
 }
 
@@ -23,7 +23,9 @@ const fields = [
   "DoubleReal32Quant32",
 ];
 
-const [input = "types.fundamental.real32quant.root", output = "types.fundamental.real32quant.json"] =
-  process.argv.slice(2);
+const [
+  input = "types.fundamental.real32quant.root",
+  output = "types.fundamental.real32quant.json",
+] = process.argv.slice(2);
 
 read(input, output, fields, formatFloat);

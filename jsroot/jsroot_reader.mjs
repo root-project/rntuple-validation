@@ -107,7 +107,10 @@ export function sortArrayOfNumbers(arr) {
 export function sortDeep(obj) {
   sortArrayOfNumbers(obj); // sort nums inside array
 
-  obj.forEach((value) => { if (Array.isArray(value)) sortArrayOfNumbers(value); }); // sort elements inside inner array
+  obj.forEach((value) => {
+    // sort elements inside inner array
+    if (Array.isArray(value)) sortArrayOfNumbers(value);
+  }); 
 
   obj.sort((a, b) => {
     const len = Math.min(a.length, b.length);
@@ -122,9 +125,7 @@ export function sortDeep(obj) {
 
 export function pairArrayToMap(arr) {
   // sort by key
-  arr.sort((a, b) =>
-    String(a.first).localeCompare(String(b.first)),
-  );
+  arr.sort((a, b) => String(a.first).localeCompare(String(b.first)));
 
   return Object.fromEntries(
     arr.map((p) => [

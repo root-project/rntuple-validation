@@ -9,7 +9,9 @@ const fields = [
   "DoubleReal32Trunc31",
 ];
 
-const [input = "types.fundamental.real32trunc.root", output = "types.fundamental.real32trunc.json"] =
-  process.argv.slice(2);
+const [
+  input = "types.fundamental.real32trunc.root",
+  output = "types.fundamental.real32trunc.json",
+] = process.argv.slice(2);
 
 read(input, output, fields, floatToHex);
