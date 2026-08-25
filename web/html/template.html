@@ -247,6 +247,10 @@
       overlay.addEventListener('click', (e) => {
         if (e.target === overlay) closeModal();
       });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+      });
     }
 
     // open modal and fill it with text
