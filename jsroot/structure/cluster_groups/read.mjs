@@ -1,6 +1,6 @@
 import { read, isNewer } from "../../jsroot_reader.mjs";
 
-if (!isNewer("7.11.1")) {
+if (!isNewer("7.11.3")) {
   console.log(" -> Skipped structure/cluster_groups: version too low");
   process.exit();
 }
