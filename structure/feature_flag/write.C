@@ -27,10 +27,14 @@ void write(std::string_view filename = "structure.feature_flag.root") {
 #endif
   descBuilder.SetNTuple("ntpl", "");
   descBuilder.SetFeature(kFeatureFlagTest);
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6, 41, 0)
+  descBuilder.AddField(ROOT::RFieldZero(), 0);
+#else
   descBuilder.AddField(RFieldDescriptorBuilder::FromField(ROOT::RFieldZero())
                            .FieldId(0)
                            .MakeDescriptor()
                            .Unwrap());
+#endif
   auto descriptor = descBuilder.MoveDescriptor();
 
   ROOT::RNTupleWriteOptions options;
