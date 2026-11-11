@@ -1,6 +1,6 @@
 import { read, isNewer } from "../../jsroot_reader.mjs";
 
-if (!isNewer("7.11.3")) {
+if (!isNewer("7.11.4")) {
   console.log(" -> Skipped structure/empty: version too low");
   process.exit();
 }

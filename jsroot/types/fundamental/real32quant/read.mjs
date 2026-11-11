@@ -1,6 +1,6 @@
 import { read, floatToHex, isNewer } from "../../../jsroot_reader.mjs";
 
-if (!isNewer("7.11.3")) {
+if (!isNewer("7.11.4")) {
   console.log(" -> Skipped types/fundamental/real32quant: version too low");
   process.exit();
 }
